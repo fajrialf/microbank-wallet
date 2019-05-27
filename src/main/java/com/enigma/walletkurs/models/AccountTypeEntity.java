@@ -11,11 +11,37 @@ public class AccountTypeEntity {
 
 	@Id
 	@Column(name="account_type_id")
-	Integer accountType;
+	int accountType;
 	
 	@Column(name="code")
 	String code;
 	
 	@Column(name="description")
 	String description;
+
+	public int getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(int accountType) {
+		this.accountType = accountType;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 }

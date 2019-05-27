@@ -2,6 +2,8 @@ package com.enigma.walletkurs.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,14 +12,39 @@ import javax.persistence.Table;
 public class ExchangeEntity {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="rate_id")
-	String rateId;
+	int rateId;
 	
 	@Column(name="buy")
-	String buy;
+	Float buy;
 	
 	@Column(name="sell")
-	String sell;
+	Float sell;
+
+	public int getRateId() {
+		return rateId;
+	}
+
+	public void setRateId(int rateId) {
+		this.rateId = rateId;
+	}
+
+	public Float getBuy() {
+		return buy;
+	}
+
+	public void setBuy(Float buy) {
+		this.buy = buy;
+	}
+
+	public Float getSell() {
+		return sell;
+	}
+
+	public void setSell(Float sell) {
+		this.sell = sell;
+	}
 	
 	
 }
