@@ -7,5 +7,5 @@ public interface CustomerDao {
     CustomerEntity create(CustomerEntity customer);
     CustomerEntity update(CustomerEntity customer);
     CustomerEntity delete(CustomerEntity customer);
-
+    CustomerEntity login(CustomerEntity customer) throws UserException;
 }
