@@ -8,7 +8,7 @@ public class ForbiddenException extends Exception {
 	
 	String code,description;
 	
-	ForbiddenException(String code,String desc){
+	public ForbiddenException(String code,String desc){
 		this.code=code;
 		this.description=desc;
 	}

@@ -1,7 +1,4 @@
 package com.enigma.walletkurs.exception;
-import java.io.FileNotFoundException;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
