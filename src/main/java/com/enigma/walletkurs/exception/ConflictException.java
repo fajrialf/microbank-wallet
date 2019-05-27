@@ -8,7 +8,7 @@ public class ConflictException extends Exception {
 	
 	String code,description;
 	
-	ConflictException(String code,String desc){
+	public ConflictException(String code,String desc){
 		this.code=code;
 		this.description=desc;
 	}
