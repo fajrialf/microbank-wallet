@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class TradingEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+//	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="trading_id")
 	String tradingId;
 	
@@ -31,8 +31,12 @@ public class TradingEntity {
 	
 	@OneToOne
 	@JoinColumn(name="rate_id")
-	int rateId;
+	ExchangeEntity rateId;
 	
+	public void setRateId(ExchangeEntity rateId) {
+		this.rateId = rateId;
+	}
+
 	@Column(name="amount")
 	Float amount;
 	
@@ -71,12 +75,9 @@ public class TradingEntity {
 		this.type = type;
 	}
 
-	public int getRateId() {
-		return rateId;
-	}
 
-	public void setRateId(int rateId) {
-		this.rateId = rateId;
+	public ExchangeEntity getRateId() {
+		return rateId;
 	}
 
 	public Float getAmount() {

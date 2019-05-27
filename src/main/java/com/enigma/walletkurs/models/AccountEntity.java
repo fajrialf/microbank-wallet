@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 public class AccountEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "account_number")
 	String accountNumber;
 
@@ -26,7 +27,7 @@ public class AccountEntity {
 
 	@OneToOne
 	@JoinColumn(name = "account_type_id")
-	int accountType;
+	AccountTypeEntity accountType;
 
 	@Column(name = "balance")
 	Float balance;
@@ -34,9 +35,9 @@ public class AccountEntity {
 	@Column(name = "open_date")
 	Date openDate;
 
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name = "customer_number")
-	String customerNumber;
+	CustomerEntity customerNumber;
 
 	
 	public Float getBalance() {
@@ -61,17 +62,15 @@ public class AccountEntity {
 
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
-	}
+	}	
 
-	public int getAccountType() {
+	public AccountTypeEntity getAccountType() {
 		return accountType;
 	}
 
-	public void setAccountType(int accountType) {
+	public void setAccountType(AccountTypeEntity accountType) {
 		this.accountType = accountType;
 	}
-
-	
 
 	public Date getOpenDate() {
 		return openDate;
@@ -81,13 +80,12 @@ public class AccountEntity {
 		this.openDate = openDate;
 	}
 
-	public String getCustomerNumber() {
+	public CustomerEntity getCustomerNumber() {
 		return customerNumber;
 	}
 
-	public void setCustomerNumber(String customerNumber) {
+	public void setCustomerNumber(CustomerEntity customerNumber) {
 		this.customerNumber = customerNumber;
 	}
-
 
 }

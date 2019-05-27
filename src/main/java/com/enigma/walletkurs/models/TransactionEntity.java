@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class TransactionEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="transaction_id")
 	String transactionId;
 	
@@ -34,7 +34,7 @@ public class TransactionEntity {
 	
 	@OneToOne
 	@JoinColumn(name="transaction_type_id")
-	String transactionType;
+	TransactionTypeEntity transactionType;
 
 	public String getTransactionId() {
 		return transactionId;
@@ -76,11 +76,11 @@ public class TransactionEntity {
 		this.date = date;
 	}
 
-	public String getTransactionType() {
+	public TransactionTypeEntity getTransactionType() {
 		return transactionType;
 	}
 
-	public void setTransactionType(String transactionType) {
+	public void setTransactionType(TransactionTypeEntity transactionType) {
 		this.transactionType = transactionType;
 	}
 	
