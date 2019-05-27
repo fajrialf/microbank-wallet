@@ -63,7 +63,7 @@ public class CustomerController {
     }
 
     @PostMapping(path = URI_REQUEST_CUSTOMER_LOGIN)
-    public CommonResponse<CustomerEntity> login(@RequestBody CustomerEntity customer) throws UserException {
+    public CommonResponse<CustomerEntity> login(@RequestBody CustomerEntity customer)  {
         CustomerEntity std = customerDao.login(customer);
         CommonResponse<CustomerEntity> response = new CommonResponse<>();
         response.setData(std);
