@@ -8,7 +8,7 @@ public class BadRequestException extends Exception {
 	
 	String code,description;
 	
-	BadRequestException(String code,String desc){
+	public BadRequestException(String code,String desc){
 		this.code=code;
 		this.description=desc;
 	}

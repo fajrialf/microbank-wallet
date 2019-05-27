@@ -8,7 +8,7 @@ public class EntityNotFoundException extends Exception {
 
 	String code,description;
 
-	EntityNotFoundException(String code,String desc){
+	public EntityNotFoundException(String code,String desc){
 		this.code=code;
 		this.description=desc;
 	}

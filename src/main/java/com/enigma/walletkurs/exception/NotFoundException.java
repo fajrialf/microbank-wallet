@@ -8,7 +8,7 @@ public class NotFoundException extends Exception {
 	int code;
 	String description;
 	
-	NotFoundException(int code,String desc){
+	public NotFoundException(int code,String desc){
 		this.code=code;
 		this.description=desc;
 	}

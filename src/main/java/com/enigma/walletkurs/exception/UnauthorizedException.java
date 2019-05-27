@@ -8,7 +8,7 @@ public class UnauthorizedException extends Exception {
 	
 	String code,description;
 	
-	UnauthorizedException(String code,String desc){
+	public UnauthorizedException(String code,String desc){
 		this.code=code;
 		this.description=desc;
 	}
