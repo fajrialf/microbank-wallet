@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class TransactionTypeEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="transaction_type_id")
 	String transactionType;
 	

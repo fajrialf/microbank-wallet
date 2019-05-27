@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,9 +17,9 @@ import javax.persistence.Table;
 public class WalletEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+//	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="wallet_id")
-	int walletId;
+	String walletId;
 	
 	@Column(name="description")
 	String description;
@@ -25,15 +27,15 @@ public class WalletEntity {
 	@Column(name="created_date")
 	Date createdDate;
 	
-	@OneToMany
-	@Column(name="customer_number")
-	String customerNumber;
+	@ManyToOne
+	@JoinColumn(name="customer_number")
+	CustomerEntity customerNumber;
 
-	public int getWalletId() {
+	public String getWalletId() {
 		return walletId;
 	}
 
-	public void setWalletId(int walletId) {
+	public void setWalletId(String walletId) {
 		this.walletId = walletId;
 	}
 
@@ -53,11 +55,11 @@ public class WalletEntity {
 		this.createdDate = createdDate;
 	}
 
-	public String getCustomerNumber() {
+	public CustomerEntity getCustomerNumber() {
 		return customerNumber;
 	}
 
-	public void setCustomerNumber(String customerNumber) {
+	public void setCustomerNumber(CustomerEntity customerNumber) {
 		this.customerNumber = customerNumber;
 	}
 
