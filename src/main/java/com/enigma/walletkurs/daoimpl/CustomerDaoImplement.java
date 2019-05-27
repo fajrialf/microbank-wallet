@@ -1,6 +1,7 @@
 package com.enigma.walletkurs.daoimpl;
 
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,16 +46,16 @@ public class CustomerDaoImplement implements CustomerDao {
     }
 
     @Override
-    public CustomerEntity login(CustomerEntity customer) throws UserException {
+    public CustomerEntity login(CustomerEntity customer) throws NotFoundException {
         if (customerRepository.findByEmail(customer.getEmail()) != null) {
             CustomerEntity user = customerRepository.findByEmail(customer.getEmail());
             if (customer.getPassword().equals(user.getPassword())) {
                 return user;
             } else {
-                throw new UserException(44, "Wrong Email Or Password!");
+                throw new NotFoundException(44, "Wrong Email Or Password!");
             }
         } else {
-            throw new UserException(44, "Wrong Email Or Password!");
+            throw new NotFoundException(44, "Wrong Email Or Password!");
         }
     }
 }
