@@ -42,6 +42,23 @@ public class AccountDaoImplement implements AccountDao {
         return account;
     }
 
+    @Transactional
+    @Override
+    public float getBalance(String accountNumber) {
+        float balance;
+        AccountEntity account = entityManager.find(AccountEntity.class, accountNumber);
+        balance = account.getBalance();
+        return balance;
+    }
+
+    @Transactional
+    @Override
+    public AccountEntity updateBalance(String accountNumber, float balance) {
+        AccountEntity account = entityManager.find(AccountEntity.class, accountNumber);
+        account.setBalance(balance);
+        return entityManager.merge(account);
+    }
+
     @Override
     public List<AccountEntity> getAccountsByCustomerNumber(CustomerEntity customerNumber) {
         TypedQuery<AccountEntity> query = entityManager.createQuery("FROM AccountEntity e WHERE e.customerNumber = :cif",
