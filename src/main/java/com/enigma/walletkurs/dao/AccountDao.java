@@ -5,13 +5,9 @@ import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
 
 public interface AccountDao {
+	List<AccountEntity> getAccountsByCustomerNumber(CustomerEntity customerNumber)  ;
 	AccountEntity getByAccountNumber(String accountNumber);
-	
-	AccountEntity addAccount(AccountEntity account);
-
-	AccountEntity updateAccount(AccountEntity account);
-
-	List<AccountEntity> getAccountsByCIF(CustomerEntity customerNumber)  ;
-
-
+	AccountEntity create(AccountEntity account);
+	AccountEntity update(AccountEntity account);
+	AccountEntity delete(AccountEntity account);
 }
