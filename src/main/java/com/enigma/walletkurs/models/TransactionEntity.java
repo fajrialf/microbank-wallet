@@ -83,5 +83,4 @@ public class TransactionEntity {
 	public void setTransactionType(TransactionTypeEntity transactionType) {
 		this.transactionType = transactionType;
 	}
-	
 }
