@@ -10,4 +10,6 @@ public interface AccountDao {
 	AccountEntity create(AccountEntity account);
 	AccountEntity update(AccountEntity account);
 	AccountEntity delete(AccountEntity account);
+	float getBalance(String accountNumber);
+	AccountEntity updateBalance(String accountNumber, float balance);
 }
