@@ -2,6 +2,8 @@ package com.enigma.walletkurs.dao;
 
 import com.enigma.walletkurs.models.TransactionEntity;
 
+import java.util.List;
+
 public interface TransactionDao {
     TransactionEntity topUp(TransactionEntity transaction);
 
@@ -11,7 +13,5 @@ public interface TransactionDao {
 
     TransactionEntity getTransactionById(String transactionID);
 
-    TransactionEntity getTransactionsByAccountNumber(String accountNumber);
-
-    TransactionEntity getTransactionsByCustomerNumber(String customerNumber);
+    List<TransactionEntity> getTransactionsByAccountNumber(String accountNumber);
 }

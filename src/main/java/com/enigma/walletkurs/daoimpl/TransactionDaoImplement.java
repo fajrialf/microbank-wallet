@@ -8,6 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class TransactionDaoImplement implements TransactionDao {
 
@@ -59,12 +64,19 @@ public class TransactionDaoImplement implements TransactionDao {
     }
 
     @Override
-    public TransactionEntity getTransactionsByAccountNumber(String accountNumber) {
-        return null;
+    public List<TransactionEntity> getTransactionsByAccountNumber(String accountNumber) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<TransactionEntity> query = builder.createQuery(TransactionEntity.class);
+        Root<TransactionEntity> root = query.from(TransactionEntity.class);
+
+        query.select(root).where(
+                builder.or(
+                        builder.like(root.get("accountNumberCredit"), accountNumber),
+                        builder.like(root.get("accountNumberDebit"), accountNumber)
+                        )
+        );
+        Query q = entityManager.createQuery(query);
+        return q.getResultList();
     }
 
-    @Override
-    public TransactionEntity getTransactionsByCustomerNumber(String customerNumber) {
-        return null;
-    }
 }
