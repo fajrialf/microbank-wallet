@@ -1,22 +1,17 @@
 package com.enigma.walletkurs.daoimpl;
 
-import com.enigma.walletkurs.dao.AccountDao;
-import com.enigma.walletkurs.dao.TransactionDao;
-import com.enigma.walletkurs.exception.NotFoundException;
-import com.enigma.walletkurs.models.TransactionEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.models.TransactionEntity;
 
 public class TransactionDaoImplement implements TransactionDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Autowired
-    private AccountDao accountDao;
 
     @Transactional
     @Override

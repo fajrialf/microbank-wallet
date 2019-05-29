@@ -24,7 +24,7 @@ public class HandlerException {
         LOGGER.warn(e.getMessage());
         LOGGER.info(e.getMessage());
         LOGGER.debug(e.getMessage());
-        return new ResponseEntity<CommonResponse>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
     }
 
     @SuppressWarnings("rawtypes")
@@ -35,7 +35,7 @@ public class HandlerException {
         LOGGER.warn(e.getMessage());
         LOGGER.info(e.getMessage());
         LOGGER.debug(e.getMessage());
-        return new ResponseEntity<CommonResponse>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
     }
     
     
@@ -48,7 +48,7 @@ public class HandlerException {
         LOGGER.warn(e.getMessage());
         LOGGER.info(e.getMessage());
         LOGGER.debug(e.getMessage());
-        return new ResponseEntity<CommonResponse>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
     }
     
     @SuppressWarnings("rawtypes")
@@ -59,7 +59,7 @@ public class HandlerException {
         LOGGER.warn(e.getMessage());
         LOGGER.info(e.getMessage());
         LOGGER.debug(e.getMessage());
-        return new ResponseEntity<CommonResponse>(new CommonResponse(Integer.parseInt("50"), "Not Allowed"), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(Integer.parseInt("50"), "Not Allowed"), HttpStatus.OK);
     }
 
     @SuppressWarnings("rawtypes")
@@ -70,7 +70,7 @@ public class HandlerException {
         LOGGER.warn(e.getMessage());
         LOGGER.info(e.getMessage());
         LOGGER.debug(e.getMessage());
-        return new ResponseEntity<CommonResponse>(new CommonResponse(Integer.parseInt("45"), e.getMessage()), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(Integer.parseInt("45"), e.getMessage()), HttpStatus.OK);
     }
 
     @ExceptionHandler(value = NullPointerException.class)
@@ -80,7 +80,7 @@ public class HandlerException {
         LOGGER.warn(e.getMessage());
         LOGGER.info(e.getMessage());
         LOGGER.debug(e.getMessage());
-        return new ResponseEntity<CommonResponse>(new CommonResponse(Integer.parseInt("51"), "Null pointer"), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(Integer.parseInt("51"), "Null pointer"), HttpStatus.OK);
     }
 
 }

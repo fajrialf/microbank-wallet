@@ -10,7 +10,6 @@ import com.enigma.walletkurs.exception.EntityNotFoundException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.AccountEntity;
-import com.enigma.walletkurs.models.CustomerEntity;
 
 @RestController
 public class AccountController {
@@ -48,7 +47,7 @@ public class AccountController {
         AccountEntity account = accountDao.getByAccountNumber(accountNumber);
         CommonResponse<AccountEntity> response = new CommonResponse<>();
         if (account == null) {
-            throw new NotFoundException(44, String.format("Account ID %d not found", accountNumber));
+            throw new NotFoundException(44, String.format("Account ID %s not found", accountNumber));
         } else {
             response.setData(account);
         }
@@ -57,11 +56,11 @@ public class AccountController {
 
     @GetMapping(value = URI_REQUEST_ACCOUNTS_BY_CUSTOMER_NUMBER)
     public CommonResponse<List<AccountEntity>> getAccountsByCif(
-            @PathVariable(name = "customerNumber") CustomerEntity customerNumber) throws EntityNotFoundException {
+            @PathVariable(name = "customerNumber") String customerNumber) throws EntityNotFoundException {
         List<AccountEntity> listAccount = accountDao.getAccountsByCustomerNumber(customerNumber);
         CommonResponse<List<AccountEntity>> resp = new CommonResponse<>();
         if (listAccount == null) {
-            throw new EntityNotFoundException(44, String.format("Account ID %d not found", customerNumber));
+            throw new EntityNotFoundException(44, String.format("Account ID %s not found", customerNumber));
         } else {
             resp.setData(listAccount);
         }
@@ -73,7 +72,7 @@ public class AccountController {
         AccountEntity check = accountDao.getByAccountNumber(accountNumber);
         CommonResponse<AccountEntity> resp = new CommonResponse<>();
         if (check == null) {
-            throw new NotFoundException(44, String.format("Account ID %d not found", accountNumber));
+            throw new NotFoundException(44, String.format("Account ID %s not found", accountNumber));
         } else {
             resp.setData(accountDao.delete(check));
         }

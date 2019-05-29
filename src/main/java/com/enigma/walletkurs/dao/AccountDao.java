@@ -5,11 +5,11 @@ import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
 
 public interface AccountDao {
-	List<AccountEntity> getAccountsByCustomerNumber(CustomerEntity customerNumber)  ;
+	List<AccountEntity> getAccountsByCustomerNumber(String custnum)  ;
 	AccountEntity getByAccountNumber(String accountNumber);
 	AccountEntity create(AccountEntity account);
 	AccountEntity update(AccountEntity account);
 	AccountEntity delete(AccountEntity account);
-	float getBalance(String accountNumber);
-	AccountEntity updateBalance(String accountNumber, float balance);
+	Double getBalance(String accountNumber);
+	AccountEntity updateBalance(String accountNumber, Double balance);
 }

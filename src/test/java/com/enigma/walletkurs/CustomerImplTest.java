@@ -26,6 +26,36 @@ public class CustomerImplTest {
 		for (int i = 0; i < 5; i++) {
 			CustomerEntity tempcus= new CustomerEntity();
 			tempcus.setBirthDate(new Date(i+1,i+2,i+3));
+			tempcus.setCustomerNumber("cust "+i);
+			tempcus.setFirstName("fname "+i);
+			tempcus.setLastName("lname "+i);
+			cusDao.create(tempcus);
 		}
+	}
+	
+	@Test
+	public void inputcustomer() {
+		CustomerEntity newcus = new CustomerEntity();
+		newcus.setFirstName("First name");
+		newcus.setLastName("Last name");
+		newcus.setCustomerNumber("c-01");
+		cusDao.create(newcus);
+		assertNotNull(cusDao.getByCustomerNumber("c-01"));
+	}
+	
+	@Test
+	public void updatecustomer() {
+		CustomerEntity newcus=cusDao.getByCustomerNumber("cust 2");
+		newcus.setFirstName("fajri");
+		cusDao.update(newcus);
+		assertEquals(newcus.getFirstName(), cusDao.getByCustomerNumber("cust 2").getFirstName());
+	}
+	
+	@Test
+	public void deletecustomer() {
+		CustomerEntity delcus = cusDao.getByCustomerNumber("cust 2");
+		cusDao.delete(delcus);
+		CustomerEntity f = new CustomerEntity();
+		assertNull(cusDao.getByCustomerNumber("cust 2"));
 	}
 }

@@ -30,7 +30,7 @@ public class CustomerController {
         CustomerEntity customer = customerDao.getByCustomerNumber(customerNumber);
         CommonResponse<CustomerEntity> response = new CommonResponse<>();
         if (customer == null) {
-            throw new NotFoundException(44, String.format("Customer ID %d not found", customerNumber));
+            throw new NotFoundException(44, String.format("Customer ID %s not found", customerNumber));
         } else {
             response.setData(customer);
         }
@@ -55,7 +55,7 @@ public class CustomerController {
         CustomerEntity customer = customerDao.getByCustomerNumber(customerNumber);
         CommonResponse<CustomerEntity> response = new CommonResponse<>();
         if (customer == null) {
-            throw new NotFoundException(44, String.format("Customer ID %d not found", customerNumber));
+            throw new NotFoundException(44, String.format("Customer ID %s not found", customerNumber));
         } else {
             response.setData(customerDao.delete(customer));
         }

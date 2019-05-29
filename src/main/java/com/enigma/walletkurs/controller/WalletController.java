@@ -25,14 +25,14 @@ public class WalletController {
 	
 	@PostMapping(path = URI_REQUEST_WALLET)
 	public CommonResponse<WalletEntity>createwallet(@RequestBody WalletDto wallet) throws ExistException{
-		CommonResponse<WalletEntity>resp=new CommonResponse<WalletEntity>();
+		CommonResponse<WalletEntity>resp=new CommonResponse<>();
 		resp.setData(walletdao.createwallet(wallet));
 		return resp;
 	}
 	
 	@PostMapping(path=URI_REQUEST_WALLETACC)
 	public CommonResponse<WalletAccountEntity>registerwallet(@RequestBody WalletAccountEntity walletacc){
-		CommonResponse<WalletAccountEntity>resp= new CommonResponse<WalletAccountEntity>();
+		CommonResponse<WalletAccountEntity>resp= new CommonResponse<>();
 		resp.setData(walletdao.registeraccount(walletacc));
 		return resp;
 	}
