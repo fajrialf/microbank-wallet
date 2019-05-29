@@ -3,9 +3,12 @@ package com.enigma.walletkurs.config;
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.dao.CustomerDao;
 import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.daoimpl.AccountDaoImplement;
 import com.enigma.walletkurs.daoimpl.CustomerDaoImplement;
 import com.enigma.walletkurs.daoimpl.TransactionDaoImplement;
+import com.enigma.walletkurs.daoimpl.WalletDaoImplement;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,7 +24,12 @@ public class BeanConfig {
     public AccountDao accountDao() {
     	return new AccountDaoImplement();
     }
-
+    
+    @Bean
+    public WalletDao walletDao() {
+    	return new WalletDaoImplement();
+    }
+    
     @Bean
     public TransactionDao transactionDao() { return new TransactionDaoImplement(); }
 

@@ -61,7 +61,7 @@ public class AccountController {
         List<AccountEntity> listAccount = accountDao.getAccountsByCustomerNumber(customerNumber);
         CommonResponse<List<AccountEntity>> resp = new CommonResponse<>();
         if (listAccount == null) {
-            throw new EntityNotFoundException("44", String.format("Account ID %d not found", customerNumber));
+            throw new EntityNotFoundException(44, String.format("Account ID %d not found", customerNumber));
         } else {
             resp.setData(listAccount);
         }

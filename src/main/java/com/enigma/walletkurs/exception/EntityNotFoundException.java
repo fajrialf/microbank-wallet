@@ -5,21 +5,24 @@ public class EntityNotFoundException extends Exception {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	int code;
+	String description;
 
-	String code,description;
-
-	public EntityNotFoundException(String code,String desc){
-		this.code=code;
+	public EntityNotFoundException(int i,String desc){
+		this.code=i;
 		this.description=desc;
 	}
 
-	public String getCode() {
+
+	public int getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+
+	public void setCode(int code) {
 		this.code = code;
 	}
+
 
 	public String getDescription() {
 		return description;

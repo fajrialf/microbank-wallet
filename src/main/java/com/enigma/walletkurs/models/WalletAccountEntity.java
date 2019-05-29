@@ -17,9 +17,9 @@ public class WalletAccountEntity {
 
 	
 	@Id
-//	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="wallet_account_id")
-	String walletAccount;
+	int id;
 	
 	@ManyToOne
 	@JoinColumn(name="wallet_id")
@@ -29,12 +29,23 @@ public class WalletAccountEntity {
 	@JoinColumn(name="account_number")
 	AccountEntity accountNumber;
 
-	public String getWalletAccount() {
-		return walletAccount;
+	@Column(name="status")
+	String status;
+	
+	public String getStatus() {
+		return status;
 	}
 
-	public void setWalletAccount(String walletAccount) {
-		this.walletAccount = walletAccount;
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public WalletEntity getWalletId() {
