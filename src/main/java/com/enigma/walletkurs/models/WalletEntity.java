@@ -1,6 +1,6 @@
 package com.enigma.walletkurs.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,11 +21,22 @@ public class WalletEntity {
 	@Column(name="wallet_id")
 	String walletId;
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Column(name="description")
 	String description;
 	
 	@Column(name="created_date")
 	Date createdDate;
+
+	@Column(name="status")
+	String status;
 	
 	@ManyToOne
 	@JoinColumn(name="customer_number")
@@ -62,6 +73,5 @@ public class WalletEntity {
 	public void setCustomerNumber(CustomerEntity customerNumber) {
 		this.customerNumber = customerNumber;
 	}
-
 	
 }

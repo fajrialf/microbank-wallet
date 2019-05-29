@@ -18,7 +18,7 @@ public class HandlerException {
     
     @SuppressWarnings("rawtypes")
     @ExceptionHandler(value = NotFoundException.class)
-    public ResponseEntity<CommonResponse> resp(NotFoundException e){
+    public ResponseEntity<CommonResponse> respnotfound(NotFoundException e){
         LOGGER.info("catchUserException");
         LOGGER.error(e.getMessage());
         LOGGER.warn(e.getMessage());
@@ -27,6 +27,30 @@ public class HandlerException {
         return new ResponseEntity<CommonResponse>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
     }
 
+    @SuppressWarnings("rawtypes")
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    public ResponseEntity<CommonResponse> respentitynotfound(EntityNotFoundException e){
+        LOGGER.info("catchEntitynotfound");
+        LOGGER.error(e.getMessage());
+        LOGGER.warn(e.getMessage());
+        LOGGER.info(e.getMessage());
+        LOGGER.debug(e.getMessage());
+        return new ResponseEntity<CommonResponse>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
+    }
+    
+    
+
+    @SuppressWarnings("rawtypes")
+    @ExceptionHandler(value = ExistException.class)
+    public ResponseEntity<CommonResponse> respexist(ExistException e){
+        LOGGER.info("catchEntitynotfound");
+        LOGGER.error(e.getMessage());
+        LOGGER.warn(e.getMessage());
+        LOGGER.info(e.getMessage());
+        LOGGER.debug(e.getMessage());
+        return new ResponseEntity<CommonResponse>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
+    }
+    
     @SuppressWarnings("rawtypes")
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<CommonResponse> respExc(Exception e){

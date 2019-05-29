@@ -1,25 +1,31 @@
 package com.enigma.walletkurs.exception;
 
-public class ConflictException extends Exception {
+public class ExistException extends Exception {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	int code;
+	String description;
 	
-	String code,description;
-	
-	public ConflictException(String code,String desc){
+	public ExistException(int code,String desc){
 		this.code=code;
 		this.description=desc;
 	}
 
-	public String getCode() {
+
+
+	public int getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+
+
+	public void setCode(int code) {
 		this.code = code;
 	}
+
+
 
 	public String getDescription() {
 		return description;
