@@ -7,6 +7,8 @@ import com.enigma.walletkurs.models.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class TransactionController {
 
@@ -14,7 +16,6 @@ public class TransactionController {
     public static final String URI_REQUEST_TRANSACTION_TOPUP = "transaction/topup";
     public static final String URI_REQUEST_TRANSACTION_TRANSFER = "transaction/transfer";
     public static final String URI_REQUEST_TRANSACTION_WITHDRAW = "transaction/withdraw";
-    public static final String URI_REQUEST_TRANSACTIONS_BY_CUSTOMER_NUMBER = "transactions/{customerNumber}";
     public static final String URI_REQUEST_TRANSACTIONS_BY_ACCOUNT_NUMBER = "transactions/{accountNumber}";
 
     @Autowired
@@ -32,26 +33,14 @@ public class TransactionController {
         return resp;
     }
 
-    @GetMapping(value = URI_REQUEST_TRANSACTIONS_BY_CUSTOMER_NUMBER)
-    public CommonResponse<TransactionEntity> getTransactionsByCustomerNumber(@PathVariable(name = "customerNumber") String customerNumber) throws NotFoundException {
-        TransactionEntity transaction = transactionDao.getTransactionsByCustomerNumber(customerNumber);
-        CommonResponse<TransactionEntity> resp = new CommonResponse<>();
-        if (transaction == null) {
-            throw new NotFoundException(44, String.format("Transaction list %d doesn't exist.", customerNumber));
-        } else {
-            resp.setData(transaction);
-        }
-        return resp;
-    }
-
     @GetMapping(value = URI_REQUEST_TRANSACTIONS_BY_ACCOUNT_NUMBER)
-    public CommonResponse<TransactionEntity> getTransactionsByAccountNumber(@PathVariable(name = "accountNumber") String accountNumber) throws NotFoundException {
-        TransactionEntity transaction = transactionDao.getTransactionsByAccountNumber(accountNumber);
-        CommonResponse<TransactionEntity> resp = new CommonResponse<>();
-        if (transaction == null) {
+    public CommonResponse<List<TransactionEntity>> getTransactionsByAccountNumber(@PathVariable(name = "accountNumber") String accountNumber) throws NotFoundException {
+        List<TransactionEntity> transactions = transactionDao.getTransactionsByAccountNumber(accountNumber);
+        CommonResponse<List<TransactionEntity>> resp = new CommonResponse<>();
+        if (transactions == null) {
             throw new NotFoundException(44, String.format("Transaction list %d doesn't exist.", accountNumber));
         } else {
-            resp.setData(transaction);
+            resp.setData(transactions);
         }
         return resp;
     }
