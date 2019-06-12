@@ -1,6 +1,5 @@
 package com.enigma.walletkurs.daoimpl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +13,11 @@ import com.enigma.walletkurs.additional.Autogenerateid;
 import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
 import com.enigma.walletkurs.exception.ExistException;
+import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.WalletAccountEntity;
 import com.enigma.walletkurs.models.WalletEntity;
+import com.enigma.walletkurs.models.dto.AccountDto;
+import com.enigma.walletkurs.models.dto.WalletAccountDto;
 import com.enigma.walletkurs.models.dto.WalletDto;
 import com.enigma.walletkurs.repository.WalletAccountRepository;
 import com.enigma.walletkurs.repository.WalletRepository;
@@ -30,13 +32,13 @@ public class WalletDaoImplement implements WalletDao{
 	@PersistenceContext
 	EntityManager em;
 	
+	String statactive="active";
+	
 	String regex="[$-/:-?{-~!\"^_`\\[\\]]";
 	
 	@Override
 	public List<WalletEntity> getAllWallet() {
-		// TODO Auto-generated method stub
-		List<WalletEntity>listwallet=walletrepo.findAll();
-		return listwallet;
+		return walletrepo.findAll();
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class WalletDaoImplement implements WalletDao{
 			throw  new ExistException(46, "Error,Description is exist");
 		}
 		wallet.setCreatedDate(new Date());
-		wallet.setStatus("active");
+		wallet.setStatus(statactive);
 		WalletEntity tempwall=new WalletEntity();
 		tempwall.setCreatedDate(wallet.getCreatedDate());
 		tempwall.setCustomerNumber(wallet.getCustomerNumber());
@@ -65,38 +67,44 @@ public class WalletDaoImplement implements WalletDao{
 	}
 
 	@Override
-	public WalletAccountEntity registeraccount(WalletAccountEntity walletacc) {
-		walletacc.setStatus("active");
-		return walletaccrepo.save(walletacc);
+	public WalletAccountEntity registeraccount(WalletAccountDto walletacc) {
+		WalletAccountEntity tempwalac= new WalletAccountEntity();
+		AccountEntity tempacc = new AccountEntity();
+		AccountDto tempaccdto= walletacc.getAccountNumber();
+		tempacc.setAccountNumber(tempaccdto.getAccountNumber());
+		WalletEntity tempwallet= new WalletEntity();
+		tempwallet.setWalletId(walletacc.getWalletId().getWalletId());
+		tempwalac.setAccountNumber(tempacc);
+		tempwalac.setWalletId(tempwallet);
+		return walletaccrepo.save(tempwalac);
 	}
 
 	@Override
 	public List<WalletEntity> getAllWalletByCustomer(String customerNumber) {
-		List<WalletEntity>listwallet=walletrepo.findBycustomerNumberCustomerNumberAndStatus(customerNumber,"active");
-		return listwallet;
+		return walletrepo.findBycustomerNumberCustomerNumberAndStatus(customerNumber,statactive);
+		
 	}
 
 	@Override
 	public List<WalletAccountEntity> getAllWalletAccountByWallet(String walletId) {
-		List<WalletAccountEntity>listwalletacc=walletaccrepo.findByWalletIdWalletIdAndStatus(walletId, "active");
-		return listwalletacc;
+		return walletaccrepo.findByWalletIdWalletIdAndStatus(walletId, statactive);
 	}
 
 	@Override
 	public String deletewallet(String walletid) throws EntityNotFoundException {
-		if (!walletrepo.existsById(walletid)) {
-			throw new EntityNotFoundException(44,"Error,Data not found");
-		}
 		WalletEntity tempwal= walletrepo.findById(walletid).orElse(null);
+		if (tempwal!=null) {
 		tempwal.setStatus("nonactive");
 		walletrepo.save(tempwal);
+		}else {
+			throw new EntityNotFoundException(44, "Error,Wallet not found");
+		}
 		return "success";
 	}
 
 	@Override
 	public WalletEntity getwalletById(String walletid) {
-		WalletEntity tempwal=walletrepo.findByWalletIdAndStatus(walletid,"active");
-		return tempwal;
+		return walletrepo.findByWalletIdAndStatus(walletid,statactive);
 	}
 
 }

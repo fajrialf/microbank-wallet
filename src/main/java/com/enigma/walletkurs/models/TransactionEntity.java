@@ -1,11 +1,9 @@
 package com.enigma.walletkurs.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -27,9 +25,9 @@ public class TransactionEntity {
 	String accountNumberDebit;
 	
 	@Column(name="amount")
-	Float amount;
+	Double amount;
 	
-	@Column(name="date")
+	@Column(name="date",updatable=false)
 	Date date;
 	
 	@OneToOne
@@ -60,20 +58,12 @@ public class TransactionEntity {
 		this.accountNumberDebit = accountNumberDebit;
 	}
 
-	public Float getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Float amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public TransactionTypeEntity getTransactionType() {
@@ -82,5 +72,13 @@ public class TransactionEntity {
 
 	public void setTransactionType(TransactionTypeEntity transactionType) {
 		this.transactionType = transactionType;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }

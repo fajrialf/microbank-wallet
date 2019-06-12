@@ -3,6 +3,8 @@ package com.enigma.walletkurs.daoimpl;
 import com.enigma.walletkurs.dao.CustomerDao;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.models.CustomerEntity;
+import com.enigma.walletkurs.models.dto.CustomerDto;
+import com.enigma.walletkurs.models.dto.LoginDto;
 import com.enigma.walletkurs.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +28,35 @@ public class CustomerDaoImplement implements CustomerDao {
 
     @Transactional
     @Override
-    public CustomerEntity create(CustomerEntity customer) {
-        CustomerEntity data = entityManager.merge(customer);
+    public CustomerEntity create(CustomerDto customer) {
+    	CustomerEntity tempcust= new CustomerEntity();
+    	tempcust.setBirthDate(customer.getBirthDate());
+    	tempcust.setCustomerNumber(customer.getCustomerNumber());
+    	tempcust.setEmail(customer.getEmail());
+    	tempcust.setFirstName(customer.getFirstName());
+    	tempcust.setLastName(customer.getLastName());
+    	tempcust.setGender(customer.getGender());
+    	tempcust.setMotherName(customer.getMotherName());
+    	tempcust.setNik(customer.getNik());
+    	tempcust.setPassword(customer.getPassword());
+        CustomerEntity data = entityManager.merge(tempcust);
         return data;
     }
 
     @Transactional
     @Override
-    public CustomerEntity update(CustomerEntity customer) {
-        CustomerEntity data = entityManager.merge(customer);
+    public CustomerEntity update(CustomerDto customer) {
+    	CustomerEntity tempcust= new CustomerEntity();
+    	tempcust.setBirthDate(customer.getBirthDate());
+    	tempcust.setCustomerNumber(customer.getCustomerNumber());
+    	tempcust.setEmail(customer.getEmail());
+    	tempcust.setFirstName(customer.getFirstName());
+    	tempcust.setLastName(customer.getLastName());
+    	tempcust.setGender(customer.getGender());
+    	tempcust.setMotherName(customer.getMotherName());
+    	tempcust.setNik(customer.getNik());
+    	tempcust.setPassword(customer.getPassword());
+        CustomerEntity data = entityManager.merge(tempcust);
         return data;
     }
 
@@ -46,7 +68,7 @@ public class CustomerDaoImplement implements CustomerDao {
     }
 
     @Override
-    public CustomerEntity login(CustomerEntity customer) throws NotFoundException {
+    public CustomerEntity login(LoginDto customer) throws NotFoundException {
         if (customerRepository.findByEmail(customer.getEmail()) != null) {
             CustomerEntity user = customerRepository.findByEmail(customer.getEmail());
             if (customer.getPassword().equals(user.getPassword())) {

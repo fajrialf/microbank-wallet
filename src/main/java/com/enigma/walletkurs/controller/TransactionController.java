@@ -1,9 +1,12 @@
 package com.enigma.walletkurs.controller;
-
 import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.exception.EntityNotFoundException;
+import com.enigma.walletkurs.exception.InsufficientAmountException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.TransactionEntity;
+import com.enigma.walletkurs.models.dto.TransactionDto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +49,7 @@ public class TransactionController {
     }
 
     @PostMapping(value = URI_REQUEST_TRANSACTION_TOPUP)
-    public CommonResponse<TransactionEntity> topUp(@RequestBody TransactionEntity transaction) throws NotFoundException {
+    public CommonResponse<TransactionEntity> topUp(@RequestBody TransactionDto transaction) throws NotFoundException, EntityNotFoundException {
         CommonResponse<TransactionEntity> topUp = new CommonResponse<>();
         TransactionEntity cst = transactionDao.topUp(transaction);
         if (cst == null) {
@@ -58,7 +61,7 @@ public class TransactionController {
     }
 
     @PostMapping(value = URI_REQUEST_TRANSACTION_TRANSFER)
-    public CommonResponse<TransactionEntity> transfer(@RequestBody TransactionEntity transaction) throws NotFoundException {
+    public CommonResponse<TransactionEntity> transfer(@RequestBody TransactionDto transaction) throws NotFoundException, EntityNotFoundException, InsufficientAmountException {
         CommonResponse<TransactionEntity> transfer = new CommonResponse<>();
         TransactionEntity cst = transactionDao.transfer(transaction);
         if (cst == null) {
@@ -70,15 +73,12 @@ public class TransactionController {
     }
 
     @PostMapping(value = URI_REQUEST_TRANSACTION_WITHDRAW)
-    public CommonResponse<TransactionEntity> withdraw(@RequestBody TransactionEntity transaction) throws NotFoundException {
+    public CommonResponse<TransactionEntity> withdraw(@RequestBody TransactionDto transaction) throws NotFoundException, EntityNotFoundException, InsufficientAmountException {
         CommonResponse<TransactionEntity> withdraw = new CommonResponse<>();
         TransactionEntity cst = transactionDao.withdraw(transaction);
         if (cst == null) {
             throw new NotFoundException(44, "Transaction failed!");
         }
-//        }else if(cst.getAmount() < transaction.getAmount()){
-//            throw  new NotFoundException(44,String.format("Balance  %d not enough", transaction.getAccountNumberDebit()));
-//        }
         else {
             withdraw.setData(cst);
         }

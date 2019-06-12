@@ -3,13 +3,14 @@ package com.enigma.walletkurs.dao;
 import java.util.List;
 import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
+import com.enigma.walletkurs.models.dto.AccountDto;
 
 public interface AccountDao {
-	List<AccountEntity> getAccountsByCustomerNumber(CustomerEntity customerNumber)  ;
+	List<AccountEntity> getAccountsByCustomerNumber(String string)  ;
 	AccountEntity getByAccountNumber(String accountNumber);
-	AccountEntity create(AccountEntity account);
-	AccountEntity update(AccountEntity account);
+	AccountEntity create(AccountDto account);
+	AccountEntity update(AccountDto account);
 	AccountEntity delete(AccountEntity account);
-	float getBalance(String accountNumber);
-	AccountEntity updateBalance(String accountNumber, float balance);
+	Double getBalance(String accountNumber);
+	AccountEntity updateBalance(String accountNumber, Double result);
 }

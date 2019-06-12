@@ -1,6 +1,8 @@
 package com.enigma.walletkurs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.sql.Date;
 
@@ -13,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.enigma.walletkurs.dao.CustomerDao;
 import com.enigma.walletkurs.models.CustomerEntity;
+import com.enigma.walletkurs.models.dto.CustomerDto;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -24,8 +27,47 @@ public class CustomerImplTest {
 	@Before
 	public void setUp() {
 		for (int i = 0; i < 5; i++) {
-			CustomerEntity tempcus= new CustomerEntity();
+			CustomerDto tempcus= new CustomerDto();
 			tempcus.setBirthDate(new Date(i+1,i+2,i+3));
+			tempcus.setCustomerNumber("cust "+i);
+			tempcus.setFirstName("fname "+i);
+			tempcus.setLastName("lname "+i);
+			cusDao.create(tempcus);
 		}
+	}
+	
+	@Test
+	public void inputcustomer() {
+		CustomerDto newcus = new CustomerDto();
+		newcus.setFirstName("First name");
+		newcus.setLastName("Last name");
+		newcus.setCustomerNumber("c-01");
+		cusDao.create(newcus);
+		assertNotNull(cusDao.getByCustomerNumber("c-01"));
+	}
+	
+	@Test
+	public void updatecustomer() {
+		CustomerEntity newcus=cusDao.getByCustomerNumber("cust 2");
+		CustomerDto  upcust= new CustomerDto();
+		newcus.setFirstName("fajri");
+		upcust.setFirstName(newcus.getFirstName());
+		upcust.setBirthDate(newcus.getBirthDate());
+		upcust.setCustomerNumber(newcus.getCustomerNumber());
+		upcust.setLastName(newcus.getLastName());
+		upcust.setGender(newcus.getGender());
+		upcust.setEmail(newcus.getEmail());
+		upcust.setMotherName(newcus.getMotherName());
+		upcust.setNik(newcus.getNik());
+		upcust.setPassword(newcus.getPassword());
+		cusDao.update(upcust);
+		assertEquals(newcus.getFirstName(), cusDao.getByCustomerNumber("cust 2").getFirstName());
+	}
+	
+	@Test
+	public void deletecustomer() {
+		CustomerEntity delcus = cusDao.getByCustomerNumber("cust 2");
+		cusDao.delete(delcus);
+		assertNull(cusDao.getByCustomerNumber("cust 2"));
 	}
 }

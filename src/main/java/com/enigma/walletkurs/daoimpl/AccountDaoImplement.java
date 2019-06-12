@@ -1,21 +1,27 @@
 package com.enigma.walletkurs.daoimpl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.models.AccountEntity;
-import com.enigma.walletkurs.models.CustomerEntity;
-import org.springframework.transaction.annotation.Transactional;
+import com.enigma.walletkurs.models.dto.AccountDto;
+import com.enigma.walletkurs.repository.AccountRepository;
 
 public class AccountDaoImplement implements AccountDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private AccountRepository accrepo;
+    
     @Override
     public AccountEntity getByAccountNumber(String accountNumber) {
         return entityManager.find(AccountEntity.class, accountNumber);
@@ -23,15 +29,29 @@ public class AccountDaoImplement implements AccountDao {
 
     @Transactional
     @Override
-    public AccountEntity create(AccountEntity account) {
-        AccountEntity acc = entityManager.merge(account);
+    public AccountEntity create(AccountDto account) {
+    	AccountEntity tempacc= new AccountEntity();
+    	tempacc.setAccountName(account.getAccountName());
+    	tempacc.setAccountNumber(account.getAccountNumber());
+    	tempacc.getAccountType().setCode(account.getAccountType().getCode());
+    	tempacc.setBalance(account.getBalance());
+    	tempacc.getCustomerNumber().setCustomerNumber(account.getCustomerNumber().getCustomerNumber());
+    	tempacc.setOpenDate(new Date());
+        AccountEntity acc = entityManager.merge(tempacc);
         return acc;
     }
 
     @Transactional
     @Override
-    public AccountEntity update(AccountEntity account) {
-        AccountEntity acc = entityManager.merge(account);
+    public AccountEntity update(AccountDto account) {
+    	AccountEntity tempacc= new AccountEntity();
+    	tempacc.setAccountName(account.getAccountName());
+    	tempacc.setAccountNumber(account.getAccountNumber());
+    	tempacc.getAccountType().setCode(account.getAccountType().getCode());
+    	tempacc.setBalance(account.getBalance());
+    	tempacc.getCustomerNumber().setCustomerNumber(account.getCustomerNumber().getCustomerNumber());
+    	tempacc.setOpenDate(new Date());
+        AccountEntity acc = entityManager.merge(tempacc);
         return acc;
     }
 
@@ -44,8 +64,8 @@ public class AccountDaoImplement implements AccountDao {
 
     @Transactional
     @Override
-    public float getBalance(String accountNumber) {
-        float balance;
+    public Double getBalance(String accountNumber) {
+        Double balance;
         AccountEntity account = entityManager.find(AccountEntity.class, accountNumber);
         balance = account.getBalance();
         return balance;
@@ -53,18 +73,17 @@ public class AccountDaoImplement implements AccountDao {
 
     @Transactional
     @Override
-    public AccountEntity updateBalance(String accountNumber, float balance) {
+    public AccountEntity updateBalance(String accountNumber, Double balance) {
         AccountEntity account = entityManager.find(AccountEntity.class, accountNumber);
         account.setBalance(balance);
         return entityManager.merge(account);
     }
 
-    @Override
-    public List<AccountEntity> getAccountsByCustomerNumber(CustomerEntity customerNumber) {
-        TypedQuery<AccountEntity> query = entityManager.createQuery("FROM AccountEntity e WHERE e.customerNumber = :cif",
-                AccountEntity.class);
-        query.setParameter("cif", customerNumber);
-        return query.getResultList();
-    }
+	@Override
+	public List<AccountEntity> getAccountsByCustomerNumber(String string) {
+		// TODO Auto-generated method stub
+		List<AccountEntity>listaccount=accrepo.findByCustomerNumberCustomerNumber(string);
+		return listaccount;
+	}
 
 }

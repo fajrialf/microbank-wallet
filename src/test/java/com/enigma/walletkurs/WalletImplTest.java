@@ -20,6 +20,9 @@ import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.WalletAccountEntity;
 import com.enigma.walletkurs.models.WalletEntity;
+import com.enigma.walletkurs.models.dto.AccountDto;
+import com.enigma.walletkurs.models.dto.CustomerDto;
+import com.enigma.walletkurs.models.dto.WalletAccountDto;
 import com.enigma.walletkurs.models.dto.WalletDto;
 
 @RunWith(SpringRunner.class)
@@ -39,14 +42,14 @@ public class WalletImplTest {
 	@Before
 	public void setUp() throws ExistException {
 		for (int j=0 ;j< 7;j++) {
-			CustomerEntity cusen= new CustomerEntity();
+			CustomerDto cusen= new CustomerDto();
 			cusen.setCustomerNumber("customer "+j);
 			cusen.setFirstName("first "+j);
 			cusen.setLastName("last "+j);
 			cusdao.create(cusen);
 		}
 		for (int h=0 ;h< 7;h++) {
-			AccountEntity accen = new AccountEntity();
+			AccountDto accen = new AccountDto();
 			accen.setAccountNumber("acc "+h);
 			accdao.create(accen);
 		}
@@ -81,9 +84,9 @@ public class WalletImplTest {
 	
 	@Test
 	public void registerwallet() {
-		WalletAccountEntity walac= new WalletAccountEntity();
-		AccountEntity newacc= new AccountEntity();
-		WalletEntity newwal= new WalletEntity();
+		WalletAccountDto walac= new WalletAccountDto();
+		AccountDto newacc= new AccountDto();
+		WalletDto newwal= new WalletDto();
 		newacc.setAccountNumber("acc 2");
 		newwal.setWalletId("W-002");
 		walac.setAccountNumber(newacc);
