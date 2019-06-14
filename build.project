@@ -47,7 +47,7 @@ pipeline{
             sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "docker stop walletkurs || true  && docker container rm walletkurs || true"'
             sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "docker pull fhazz22/final-project || true"'
             sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "mkdir -p /apps/fajri"'
-            sh 'scp -o StrictHostKeyChecking=no deploy/dev.env root@104.248.147.193:/apps/wallet-api/tes.env'
+            sh 'scp -o StrictHostKeyChecking=no deploy/dev.env root@104.248.147.193:/apps/fajri/tes.env'
             sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "cd /apps/fajri && docker run -p 8090:8090 -d --env-file=tes.env --name=walletkurs $registry"'
         }
       }
