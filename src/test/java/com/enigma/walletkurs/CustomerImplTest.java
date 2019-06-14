@@ -14,8 +14,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.dto.CustomerDto;
+import com.enigma.walletkurs.models.dto.LoginDto;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -32,6 +34,8 @@ public class CustomerImplTest {
 			tempcus.setCustomerNumber("cust "+i);
 			tempcus.setFirstName("fname "+i);
 			tempcus.setLastName("lname "+i);
+			tempcus.setEmail("email "+i);
+			tempcus.setPassword("pass"+i);
 			cusDao.create(tempcus);
 		}
 	}
@@ -69,5 +73,22 @@ public class CustomerImplTest {
 		CustomerEntity delcus = cusDao.getByCustomerNumber("cust 2");
 		cusDao.delete(delcus);
 		assertNull(cusDao.getByCustomerNumber("cust 2"));
+	}
+	
+	@Test
+	public void login() throws NotFoundException {
+		LoginDto login =new LoginDto();
+		login.setEmail("email 1");
+		login.setPassword("pass1");
+		assertNotNull(cusDao.login(login));
+	}
+	
+	
+	@Test(expected=NotFoundException.class)
+	public void loginfail() throws NotFoundException {
+		LoginDto login =new LoginDto();
+		login.setEmail("emaila");
+		login.setPassword("pass1");
+		cusDao.login(login);
 	}
 }

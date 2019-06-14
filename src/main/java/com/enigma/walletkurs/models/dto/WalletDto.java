@@ -34,11 +34,11 @@ public class WalletDto {
 		this.createdDate = createdDate;
 	}
 
-	public CustomerEntity getCustomerNumber() {
+	public CustomerDto getCustomerNumber() {
 		return customerNumber;
 	}
 
-	public void setCustomerNumber(CustomerEntity customerNumber) {
+	public void setCustomerNumber(CustomerDto customerNumber) {
 		this.customerNumber = customerNumber;
 	}
 	String status;
@@ -52,5 +52,5 @@ public class WalletDto {
 	}
 	Date createdDate;
 	
-	CustomerEntity customerNumber;
+	CustomerDto customerNumber;
 }

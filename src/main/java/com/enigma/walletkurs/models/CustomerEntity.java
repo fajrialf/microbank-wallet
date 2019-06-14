@@ -40,6 +40,13 @@ public class CustomerEntity {
 	@Column(name = "password")
 	String password;
 
+	public CustomerEntity(){
+		
+	}
+	public CustomerEntity(String cusnum){
+		this.customerNumber=cusnum;
+	}
+	
 	public String getCustomerNumber() {
 		return customerNumber;
 	}

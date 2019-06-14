@@ -22,8 +22,8 @@ public class AccountEntity {
 	@Column(name = "account_name")
 	String accountName;
 
-	@OneToOne
-	@JoinColumn(name = "account_type_id")
+	@ManyToOne
+	@JoinColumn(name = "code")
 	AccountTypeEntity accountType;
 
 	@Column(name = "balance")

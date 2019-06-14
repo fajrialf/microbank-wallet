@@ -1,6 +1,6 @@
 package com.enigma.walletkurs.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +18,14 @@ public class TradingEntity {
 	@Column(name="trading_id")
 	String tradingId;
 	
+	public Double getSisa() {
+		return sisa;
+	}
+
+	public void setSisa(Double sisa) {
+		this.sisa = sisa;
+	}
+
 	@Column(name="date")
 	Date date;
 	
@@ -30,6 +38,11 @@ public class TradingEntity {
 	@OneToOne
 	@JoinColumn(name="rate_id")
 	ExchangeEntity rateId;
+	
+	
+	@Column(name="sisa")
+	Double sisa;
+	
 	
 	public void setRateId(ExchangeEntity rateId) {
 		this.rateId = rateId;

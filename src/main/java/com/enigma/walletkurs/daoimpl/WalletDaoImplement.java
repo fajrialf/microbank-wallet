@@ -14,6 +14,7 @@ import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
 import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.models.AccountEntity;
+import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.WalletAccountEntity;
 import com.enigma.walletkurs.models.WalletEntity;
 import com.enigma.walletkurs.models.dto.AccountDto;
@@ -50,7 +51,7 @@ public class WalletDaoImplement implements WalletDao{
 		wallet.setStatus(statactive);
 		WalletEntity tempwall=new WalletEntity();
 		tempwall.setCreatedDate(wallet.getCreatedDate());
-		tempwall.setCustomerNumber(wallet.getCustomerNumber());
+		tempwall.setCustomerNumber(new CustomerEntity(wallet.getCustomerNumber().getCustomerNumber()));
 		tempwall.setDescription(wallet.getDescription());
 		tempwall.setStatus(wallet.getStatus());
 		
@@ -76,6 +77,7 @@ public class WalletDaoImplement implements WalletDao{
 		tempwallet.setWalletId(walletacc.getWalletId().getWalletId());
 		tempwalac.setAccountNumber(tempacc);
 		tempwalac.setWalletId(tempwallet);
+		tempwalac.setStatus(statactive);
 		return walletaccrepo.save(tempwalac);
 	}
 

@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.models.AccountEntity;
+import com.enigma.walletkurs.models.AccountTypeEntity;
+import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.dto.AccountDto;
 import com.enigma.walletkurs.repository.AccountRepository;
 
@@ -31,11 +33,15 @@ public class AccountDaoImplement implements AccountDao {
     @Override
     public AccountEntity create(AccountDto account) {
     	AccountEntity tempacc= new AccountEntity();
+    	AccountTypeEntity acctype= new AccountTypeEntity();
+    	CustomerEntity custtemp=new CustomerEntity();
+    	custtemp.setCustomerNumber(account.getCustomerNumber().getCustomerNumber());
+    	acctype.setCode(account.getAccountType().getCode());
     	tempacc.setAccountName(account.getAccountName());
     	tempacc.setAccountNumber(account.getAccountNumber());
-    	tempacc.getAccountType().setCode(account.getAccountType().getCode());
+//    	tempacc.setAccountType(acctype);
     	tempacc.setBalance(account.getBalance());
-    	tempacc.getCustomerNumber().setCustomerNumber(account.getCustomerNumber().getCustomerNumber());
+    	tempacc.setCustomerNumber(custtemp);
     	tempacc.setOpenDate(new Date());
         AccountEntity acc = entityManager.merge(tempacc);
         return acc;
