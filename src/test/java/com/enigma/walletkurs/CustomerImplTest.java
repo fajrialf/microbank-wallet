@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.dto.CustomerDto;
@@ -27,11 +28,11 @@ public class CustomerImplTest {
 	CustomerDao cusDao;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws ExistException {
 		for (int i = 0; i < 5; i++) {
 			CustomerDto tempcus= new CustomerDto();
+			tempcus.setNik("nik "+i);
 			tempcus.setBirthDate(new Date(i+1,i+2,i+3));
-			tempcus.setCustomerNumber("cust "+i);
 			tempcus.setFirstName("fname "+i);
 			tempcus.setLastName("lname "+i);
 			tempcus.setEmail("email "+i);
@@ -41,18 +42,22 @@ public class CustomerImplTest {
 	}
 	
 	@Test
-	public void inputcustomer() {
+	public void inputcustomer() throws ExistException {
 		CustomerDto newcus = new CustomerDto();
 		newcus.setFirstName("First name");
 		newcus.setLastName("Last name");
-		newcus.setCustomerNumber("c-01");
+		newcus.setEmail("email lo");
+		newcus.setPassword("passti");
+		newcus.setNik("nikah");
+		newcus.setBirthDate(new Date(2019,03,12));
 		cusDao.create(newcus);
-		assertNotNull(cusDao.getByCustomerNumber("c-01"));
+		assertNotNull(cusDao.getByCustomerNumber("CS-006"));
 	}
 	
+	
 	@Test
-	public void updatecustomer() {
-		CustomerEntity newcus=cusDao.getByCustomerNumber("cust 2");
+	public void updatecustomer() throws ExistException {
+		CustomerEntity newcus=cusDao.getByCustomerNumber("CS-002");
 		CustomerDto  upcust= new CustomerDto();
 		newcus.setFirstName("fajri");
 		upcust.setFirstName(newcus.getFirstName());
@@ -65,14 +70,14 @@ public class CustomerImplTest {
 		upcust.setNik(newcus.getNik());
 		upcust.setPassword(newcus.getPassword());
 		cusDao.update(upcust);
-		assertEquals(newcus.getFirstName(), cusDao.getByCustomerNumber("cust 2").getFirstName());
+		assertEquals(newcus.getFirstName(), cusDao.getByCustomerNumber("CS-002").getFirstName());
 	}
 	
 	@Test
 	public void deletecustomer() {
-		CustomerEntity delcus = cusDao.getByCustomerNumber("cust 2");
+		CustomerEntity delcus = cusDao.getByCustomerNumber("CS-002");
 		cusDao.delete(delcus);
-		assertNull(cusDao.getByCustomerNumber("cust 2"));
+		assertNull(cusDao.getByCustomerNumber("CS-002"));
 	}
 	
 	@Test
@@ -90,5 +95,14 @@ public class CustomerImplTest {
 		login.setEmail("emaila");
 		login.setPassword("pass1");
 		cusDao.login(login);
+	}
+	
+	@Test(expected=ExistException.class)
+	public void emailexist() throws ExistException {
+		CustomerDto newcus = new CustomerDto();
+		newcus.setFirstName("First name");
+		newcus.setLastName("Last name");
+		newcus.setEmail("email 1");
+		cusDao.create(newcus);		
 	}
 }

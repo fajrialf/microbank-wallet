@@ -120,4 +120,22 @@ public class TransactionDaoImplement implements TransactionDao {
         return q.getResultList();
     }
 
+	@Override
+	public TransactionEntity openaccount(TransactionDto transaction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TransactionEntity buyAsset(TransactionDto transaction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TransactionEntity sellAsset(TransactionDto transaction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

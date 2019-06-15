@@ -2,6 +2,7 @@ package com.enigma.walletkurs;
 
 import static org.junit.Assert.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +50,13 @@ public class WalletImplTest {
 	@Autowired
 	private AccountTypeDao at;
 	
+	
 	@Transactional
 	@Before
 	public void setUp() throws ExistException {
+
+		
+
 		AccountTypeEntity acct1= new AccountTypeEntity();
 		acct1.setCode("at 1");
 		acct1.setDescription("main");
@@ -66,34 +71,38 @@ public class WalletImplTest {
 		acct3.setCode("at 3");
 		acct3.setDescription("sub");
 		at.input(acct3);
+
 		
-		AccountTypeDto acct4= new AccountTypeDto();
-		acct4.setAccountType(1);
-		acct4.setCode("at 1");
-		acct4.setDescription("main");
-		
-		for (int j=0 ;j< 7;j++) {
-			CustomerDto cusen= new CustomerDto();
-			cusen.setCustomerNumber("customer "+j);
-			cusen.setFirstName("first "+j);
-			cusen.setLastName("last "+j);
-			cusdao.create(cusen);
+		for (int j=0 ;j< 8;j++) {
+			CustomerDto tempcus= new CustomerDto();
+			tempcus.setNik("nik "+j);
+			tempcus.setBirthDate(new Date(j+1,j+2,j+3));
+			tempcus.setFirstName("fname "+j);
+			tempcus.setLastName("lname "+j);
+			tempcus.setEmail("email "+j);
+			tempcus.setPassword("pass"+j);
+			cusdao.create(tempcus);
 		}
 		for (int h=0 ;h< 7;h++) {
 			AccountDto accen = new AccountDto();
+
+			AccountTypeDto acct4= new AccountTypeDto();
+			acct4.setAccountType(1);
+			acct4.setCode("at 1");
+			acct4.setDescription("main");
 			accen.setAccountNumber("acc "+h);
 			accen.setAccountType(acct4);
-			accen.setCustomerNumber(new CustomerDto("customer "+h));
+			accen.setCustomerNumber(new CustomerDto("CS-00"+(h+1)));
 			accdao.create(accen);
 		}
 		for (int i = 0; i < 5; i++) {
 			CustomerDto newcust= new CustomerDto();
-			newcust.setCustomerNumber("customer "+ i);
+			newcust.setCustomerNumber("CS-00"+(i+1));
 			WalletDto wallen= new WalletDto();
 			wallen.setDescription("ini desc "+ i);
 			wallen.setCustomerNumber(newcust);
 			walletdao.createwallet(wallen);
-		}
+		}		
 	}
 	
 	@Test(expected=ExistException.class)
@@ -108,11 +117,11 @@ public class WalletImplTest {
 		WalletDto newwal= new WalletDto();
 		newwal.setDescription("desc baru");
 		CustomerDto newcus= new CustomerDto();
-		newcus.setCustomerNumber("customer 5");
+		newcus.setCustomerNumber("CS-006");
 		newwal.setCustomerNumber(newcus);
 		assertNotNull(walletdao.createwallet(newwal));
 		List<WalletEntity>newwall= new ArrayList<WalletEntity>();
-		assertNotEquals(newwall,walletdao.getAllWalletByCustomer("customer 5"));
+		assertNotEquals(newwall,walletdao.getAllWalletByCustomer("CS-006"));
 	}
 	
 	@Test
