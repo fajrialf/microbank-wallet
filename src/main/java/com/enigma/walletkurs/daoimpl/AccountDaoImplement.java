@@ -39,7 +39,7 @@ public class AccountDaoImplement implements AccountDao {
     	acctype.setCode(account.getAccountType().getCode());
     	tempacc.setAccountName(account.getAccountName());
     	tempacc.setAccountNumber(account.getAccountNumber());
-//    	tempacc.setAccountType(acctype);
+    	tempacc.setAccountType(acctype);
     	tempacc.setBalance(account.getBalance());
     	tempacc.setCustomerNumber(custtemp);
     	tempacc.setOpenDate(new Date());

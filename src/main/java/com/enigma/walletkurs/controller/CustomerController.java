@@ -1,6 +1,7 @@
 package com.enigma.walletkurs.controller;
 
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.CustomerEntity;
@@ -21,7 +22,7 @@ public class CustomerController {
     private CustomerDao customerDao;
 
     @PostMapping(value = URI_REQUEST_CUSTOMER)
-    public CommonResponse<CustomerEntity> create(@RequestBody CustomerDto customer) {
+    public CommonResponse<CustomerEntity> create(@RequestBody CustomerDto customer) throws ExistException {
         CommonResponse<CustomerEntity> data = new CommonResponse<>();
         CustomerEntity newCustomer = customerDao.create(customer);
         data.setData(newCustomer);
@@ -41,7 +42,7 @@ public class CustomerController {
     }
 
     @PutMapping(value = URI_REQUEST_CUSTOMER_BY_CUSTOMER_NUMBER)
-    public CommonResponse<CustomerEntity> update(@RequestBody CustomerDto customer) throws NotFoundException {
+    public CommonResponse<CustomerEntity> update(@RequestBody CustomerDto customer) throws NotFoundException, ExistException {
         CustomerEntity data = customerDao.getByCustomerNumber(customer.getCustomerNumber());
         CommonResponse<CustomerEntity> response = new CommonResponse<>();
         if (data == null) {

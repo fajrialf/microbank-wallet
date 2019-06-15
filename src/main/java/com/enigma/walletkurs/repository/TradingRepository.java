@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.enigma.walletkurs.models.TradingEntity;
 
-public interface TradingRepository extends JpaRepository<TradingEntity, String> {
+public interface TradingRepository extends JpaRepository<TradingEntity, Integer> {
 
 	List<TradingEntity>findByTradingId(String id);
 }

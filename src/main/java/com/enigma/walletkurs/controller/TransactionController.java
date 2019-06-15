@@ -29,7 +29,7 @@ public class TransactionController {
         TransactionEntity transaction = transactionDao.getTransactionById(transactionId);
         CommonResponse<TransactionEntity> resp = new CommonResponse<>();
         if (transaction == null) {
-            throw new NotFoundException(44, String.format("Transaction ID %d not found", transactionId));
+            throw new NotFoundException(44, String.format("Transaction ID %s not found", transactionId));
         } else {
             resp.setData(transaction);
         }
@@ -41,7 +41,7 @@ public class TransactionController {
         List<TransactionEntity> transactions = transactionDao.getTransactionsByAccountNumber(accountNumber);
         CommonResponse<List<TransactionEntity>> resp = new CommonResponse<>();
         if (transactions == null) {
-            throw new NotFoundException(44, String.format("Transaction list %d doesn't exist.", accountNumber));
+            throw new NotFoundException(44, String.format("Transaction list %s doesn't exist.", accountNumber));
         } else {
             resp.setData(transactions);
         }

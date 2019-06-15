@@ -12,5 +12,8 @@ public interface TransactionDao {
     TransactionEntity transfer(TransactionDto transaction) throws EntityNotFoundException, InsufficientAmountException;
     TransactionEntity withdraw(TransactionDto transaction) throws EntityNotFoundException, InsufficientAmountException;
     TransactionEntity getTransactionById(String transactionID);
+    TransactionEntity openaccount(TransactionDto transaction);
+    TransactionEntity buyAsset(TransactionDto transaction);
+    TransactionEntity sellAsset(TransactionDto transaction);
     List<TransactionEntity> getTransactionsByAccountNumber(String accountNumber);
 }
