@@ -1,6 +1,7 @@
 package com.enigma.walletkurs.models.dto;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -14,7 +15,7 @@ public class TransactionDto {
 	
 	String accountNumberDebit;
 	
-	Float amount;
+	Double amount;
 	
 	@Column(name="date")
 	Date date;
@@ -47,11 +48,12 @@ public class TransactionDto {
 		this.accountNumberDebit = accountNumberDebit;
 	}
 
-	public Float getAmount() {
+
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Float amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 

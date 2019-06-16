@@ -1,23 +1,23 @@
 package com.enigma.walletkurs.exception;
 
-public class UnauthorizedException extends Exception {
+public class InsufficientAmountException extends Exception {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	int code;
+	String description;
 	
-	String code,description;
-	
-	public UnauthorizedException(String code,String desc){
+	public InsufficientAmountException(int code,String desc){
 		this.code=code;
 		this.description=desc;
 	}
 
-	public String getCode() {
+	public int getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(int code) {
 		this.code = code;
 	}
 

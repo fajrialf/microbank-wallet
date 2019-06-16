@@ -1,0 +1,21 @@
+pipeline{
+  environment {
+    registry = "fhazz22/final-project"
+    registryCredential = 'docker_user_fajri'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Deploy and Run App') {
+      steps{
+        sshagent(credentials : ['543699f1-e549-4e48-b3db-7ab4456ee495']) {
+            sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "docker stop walletkurs || true  && docker container rm walletkurs || true"'
+            sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "docker pull fhazz22/final-project || true"'
+            sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "mkdir -p /apps/fajri"'
+            sh 'scp -o StrictHostKeyChecking=no tes.env root@104.248.147.193:/apps/fajri/tes.env'
+            sh 'ssh -o StrictHostKeyChecking=no root@104.248.147.193 "cd /apps/fajri && docker run -p 2020:2020 -d --env-file=tes.env --name=walletkurs $registry"'
+        }
+      }
+    }
+  }
+}

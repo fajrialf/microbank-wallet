@@ -18,9 +18,9 @@ public class TradingDto {
 		this.rateId = rateId;
 	}
 
-	Float amount;
+	Double amount;
 	
-	Float income;
+	Double income;
 
 	public String getTradingId() {
 		return tradingId;
@@ -59,19 +59,19 @@ public class TradingDto {
 		return rateId;
 	}
 
-	public Float getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Float amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public Float getIncome() {
+	public Double getIncome() {
 		return income;
 	}
 
-	public void setIncome(Float income) {
+	public void setIncome(Double income) {
 		this.income = income;
 	}
 	
