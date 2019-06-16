@@ -7,22 +7,25 @@ import org.springframework.web.bind.annotation.*;
 
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
+import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.AccountEntity;
+import com.enigma.walletkurs.models.dto.AccountDto;
 
 @RestController
 public class AccountController {
 
-    public static final String URI_REQUEST_ACCOUNT = "account";
+	public static final String URI_REQUEST_ACCOUNT = "account";
     public static final String URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER = "account/{accountNumber}";
     public static final String URI_REQUEST_ACCOUNTS_BY_CUSTOMER_NUMBER = "accounts/{customerNumber}";
 
     @Autowired
     private AccountDao accountDao;
 
+    String accexceptionmsg="Account ID %s not found";
     @PostMapping(value = URI_REQUEST_ACCOUNT)
-    public CommonResponse<AccountEntity> add(@RequestBody AccountEntity account) {
+    public CommonResponse<AccountEntity> add(@RequestBody AccountDto account) throws ExistException {
         CommonResponse<AccountEntity> acc = new CommonResponse<>();
         AccountEntity tempAcc = accountDao.create(account);
         acc.setData(tempAcc);
@@ -30,14 +33,13 @@ public class AccountController {
     }
 
     @PutMapping(value = URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER)
-    public CommonResponse<AccountEntity> update(@RequestBody AccountEntity account) throws NotFoundException {
+    public CommonResponse<AccountEntity> update(@RequestBody AccountDto account) throws NotFoundException {
         AccountEntity acc = accountDao.getByAccountNumber(account.getAccountNumber());
         CommonResponse<AccountEntity> response = new CommonResponse<>();
         if (acc == null) {
             throw new NotFoundException(44, "Customer data doesn't exist!");
         } else {
-            accountDao.update(account);
-            response.setData(account);
+            response.setData(accountDao.update(account));
         }
         return response;
     }
@@ -47,7 +49,7 @@ public class AccountController {
         AccountEntity account = accountDao.getByAccountNumber(accountNumber);
         CommonResponse<AccountEntity> response = new CommonResponse<>();
         if (account == null) {
-            throw new NotFoundException(44, String.format("Account ID %s not found", accountNumber));
+            throw new NotFoundException(44, String.format(accexceptionmsg, accountNumber));
         } else {
             response.setData(account);
         }
@@ -60,7 +62,7 @@ public class AccountController {
         List<AccountEntity> listAccount = accountDao.getAccountsByCustomerNumber(customerNumber);
         CommonResponse<List<AccountEntity>> resp = new CommonResponse<>();
         if (listAccount == null) {
-            throw new EntityNotFoundException(44, String.format("Account ID %s not found", customerNumber));
+            throw new EntityNotFoundException(44, String.format(accexceptionmsg, customerNumber));
         } else {
             resp.setData(listAccount);
         }
@@ -72,7 +74,7 @@ public class AccountController {
         AccountEntity check = accountDao.getByAccountNumber(accountNumber);
         CommonResponse<AccountEntity> resp = new CommonResponse<>();
         if (check == null) {
-            throw new NotFoundException(44, String.format("Account ID %s not found", accountNumber));
+            throw new NotFoundException(44, String.format(accexceptionmsg, accountNumber));
         } else {
             resp.setData(accountDao.delete(check));
         }

@@ -2,24 +2,36 @@ package com.enigma.walletkurs;
 
 import static org.junit.Assert.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.enigma.walletkurs.dao.AccountDao;
+import com.enigma.walletkurs.dao.AccountTypeDao;
 import com.enigma.walletkurs.dao.CustomerDao;
 import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.models.AccountEntity;
+import com.enigma.walletkurs.models.AccountTypeEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.WalletAccountEntity;
 import com.enigma.walletkurs.models.WalletEntity;
+import com.enigma.walletkurs.models.dto.AccountDto;
+import com.enigma.walletkurs.models.dto.AccountTypeDto;
+import com.enigma.walletkurs.models.dto.CustomerDto;
+import com.enigma.walletkurs.models.dto.WalletAccountDto;
 import com.enigma.walletkurs.models.dto.WalletDto;
 
 @RunWith(SpringRunner.class)
@@ -30,34 +42,49 @@ public class WalletImplTest {
 	WalletDao walletdao;
 	
 	@Autowired
-	CustomerDao cusdao;
-	
+	private CustomerDao cusdao;
 
 	@Autowired
-	AccountDao accdao;
+	private AccountDao accdao;
 	
+	@Autowired
+	private AccountTypeDao at;
+	
+	
+	@Transactional
 	@Before
 	public void setUp() throws ExistException {
-		for (int j=0 ;j< 7;j++) {
-			CustomerEntity cusen= new CustomerEntity();
-			cusen.setCustomerNumber("customer "+j);
-			cusen.setFirstName("first "+j);
-			cusen.setLastName("last "+j);
-			cusdao.create(cusen);
+		
+		for (int j=0 ;j< 8;j++) {
+			CustomerDto tempcus= new CustomerDto();
+			tempcus.setNik("nik "+j);
+			tempcus.setBirthDate(new Date(j+1,j+2,j+3));
+			tempcus.setFirstName("fname "+j);
+			tempcus.setLastName("lname "+j);
+			tempcus.setEmail("email "+j);
+			tempcus.setPassword("pass"+j);
+			cusdao.create(tempcus);
 		}
 		for (int h=0 ;h< 7;h++) {
-			AccountEntity accen = new AccountEntity();
+			AccountDto accen = new AccountDto();
+
+			AccountTypeDto acct4= new AccountTypeDto();
+			acct4.setAccountType(1);
+			acct4.setCode("at 1");
+			acct4.setDescription("main");
 			accen.setAccountNumber("acc "+h);
+			accen.setAccountType(acct4);
+			accen.setCustomerNumber(new CustomerDto("CS-00"+(h+1)));
 			accdao.create(accen);
 		}
 		for (int i = 0; i < 5; i++) {
-			CustomerEntity newcust= new CustomerEntity();
-			newcust.setCustomerNumber("customer "+ i);
+			CustomerDto newcust= new CustomerDto();
+			newcust.setCustomerNumber("CS-00"+(i+1));
 			WalletDto wallen= new WalletDto();
 			wallen.setDescription("ini desc "+ i);
 			wallen.setCustomerNumber(newcust);
 			walletdao.createwallet(wallen);
-		}
+		}		
 	}
 	
 	@Test(expected=ExistException.class)
@@ -71,19 +98,19 @@ public class WalletImplTest {
 	public void inputwalletsuccess() throws ExistException{
 		WalletDto newwal= new WalletDto();
 		newwal.setDescription("desc baru");
-		CustomerEntity newcus= new CustomerEntity();
-		newcus.setCustomerNumber("customer 5");
+		CustomerDto newcus= new CustomerDto();
+		newcus.setCustomerNumber("CS-006");
 		newwal.setCustomerNumber(newcus);
 		assertNotNull(walletdao.createwallet(newwal));
 		List<WalletEntity>newwall= new ArrayList<WalletEntity>();
-		assertNotEquals(newwall,walletdao.getAllWalletByCustomer("customer 5"));
+		assertNotEquals(newwall,walletdao.getAllWalletByCustomer("CS-006"));
 	}
 	
 	@Test
 	public void registerwallet() {
-		WalletAccountEntity walac= new WalletAccountEntity();
-		AccountEntity newacc= new AccountEntity();
-		WalletEntity newwal= new WalletEntity();
+		WalletAccountDto walac= new WalletAccountDto();
+		AccountDto newacc= new AccountDto();
+		WalletDto newwal= new WalletDto();
 		newacc.setAccountNumber("acc 2");
 		newwal.setWalletId("W-002");
 		walac.setAccountNumber(newacc);

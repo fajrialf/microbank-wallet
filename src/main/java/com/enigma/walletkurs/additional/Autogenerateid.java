@@ -14,7 +14,8 @@ public class Autogenerateid {
 	
 	public String generatedid() {
 		int le=current.length();
-		String tid= current.substring(this.length,le);
-		return this.code+String.format("%"+this.pad+""+(this.length+1)+"d", Integer.parseInt(tid) +1);
+		String tid= current.substring(le-this.length); 
+		String newcode=String.format("%s|p%s%d|d", this.code,this.pad,this.length+1);
+				return String.format(newcode.replace("|p", "%").replace("|d", "d"), Integer.parseInt(tid) +1);
 	}
 }

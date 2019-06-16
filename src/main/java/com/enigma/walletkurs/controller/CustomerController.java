@@ -1,9 +1,13 @@
 package com.enigma.walletkurs.controller;
 
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.CustomerEntity;
+import com.enigma.walletkurs.models.dto.CustomerDto;
+import com.enigma.walletkurs.models.dto.LoginDto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +22,7 @@ public class CustomerController {
     private CustomerDao customerDao;
 
     @PostMapping(value = URI_REQUEST_CUSTOMER)
-    public CommonResponse<CustomerEntity> create(@RequestBody CustomerEntity customer) {
+    public CommonResponse<CustomerEntity> create(@RequestBody CustomerDto customer) throws ExistException {
         CommonResponse<CustomerEntity> data = new CommonResponse<>();
         CustomerEntity newCustomer = customerDao.create(customer);
         data.setData(newCustomer);
@@ -38,14 +42,13 @@ public class CustomerController {
     }
 
     @PutMapping(value = URI_REQUEST_CUSTOMER_BY_CUSTOMER_NUMBER)
-    public CommonResponse<CustomerEntity> update(@RequestBody CustomerEntity customer) throws NotFoundException {
+    public CommonResponse<CustomerEntity> update(@RequestBody CustomerDto customer) throws NotFoundException, ExistException {
         CustomerEntity data = customerDao.getByCustomerNumber(customer.getCustomerNumber());
         CommonResponse<CustomerEntity> response = new CommonResponse<>();
         if (data == null) {
             throw new NotFoundException(44, "Customer data doesn't exist!");
         } else {
-            customerDao.update(customer);
-            response.setData(customer);
+            response.setData(customerDao.update(customer));
         }
         return response;
     }
@@ -60,10 +63,11 @@ public class CustomerController {
             response.setData(customerDao.delete(customer));
         }
         return response;
+    
     }
 
     @PostMapping(path = URI_REQUEST_CUSTOMER_LOGIN)
-    public CommonResponse<CustomerEntity> login(@RequestBody CustomerEntity customer) throws NotFoundException {
+    public CommonResponse<CustomerEntity> login(@RequestBody LoginDto customer) throws NotFoundException {
         CustomerEntity std = customerDao.login(customer);
         CommonResponse<CustomerEntity> response = new CommonResponse<>();
         response.setData(std);

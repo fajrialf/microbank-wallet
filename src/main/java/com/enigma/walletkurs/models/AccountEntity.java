@@ -1,6 +1,7 @@
+
 package com.enigma.walletkurs.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,8 +23,8 @@ public class AccountEntity {
 	@Column(name = "account_name")
 	String accountName;
 
-	@OneToOne
-	@JoinColumn(name = "account_type_id")
+	@ManyToOne
+	@JoinColumn(name = "code")
 	AccountTypeEntity accountType;
 
 	@Column(name = "balance")
