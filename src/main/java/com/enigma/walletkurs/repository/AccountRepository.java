@@ -8,5 +8,6 @@ import com.enigma.walletkurs.models.AccountEntity;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, String> {
 	List<AccountEntity> findByCustomerNumberCustomerNumber(String custnum);
+	boolean existsByAccountTypeDescriptionAndCustomerNumberCustomerNumber(String description,String cusnum);
 	AccountEntity findByAccountNumberAndAccountTypeDescription(String accnum,String acctype);
 }

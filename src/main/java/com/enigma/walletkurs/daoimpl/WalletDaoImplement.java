@@ -44,9 +44,6 @@ public class WalletDaoImplement implements WalletDao{
 
 	@Override
 	public WalletEntity createwallet(WalletDto wallet) throws ExistException {
-		if (walletrepo.existsByDescription(wallet.getDescription())){
-			throw  new ExistException(46, "Error,Description is exist");
-		}
 		wallet.setCreatedDate(new Date());
 		wallet.setStatus(statactive);
 		WalletEntity tempwall=new WalletEntity();

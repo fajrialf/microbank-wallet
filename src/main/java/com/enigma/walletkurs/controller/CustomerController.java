@@ -1,12 +1,18 @@
 package com.enigma.walletkurs.controller;
 
+import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
+import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
+import com.enigma.walletkurs.models.WalletEntity;
 import com.enigma.walletkurs.models.dto.CustomerDto;
 import com.enigma.walletkurs.models.dto.LoginDto;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +27,14 @@ public class CustomerController {
     @Autowired
     private CustomerDao customerDao;
 
+
+    @Autowired
+    private WalletDao walletDao;
+    
+
+    @Autowired
+    private AccountDao accountDao;
+    
     @PostMapping(value = URI_REQUEST_CUSTOMER)
     public CommonResponse<CustomerEntity> create(@RequestBody CustomerDto customer) throws ExistException {
         CommonResponse<CustomerEntity> data = new CommonResponse<>();
@@ -70,6 +84,22 @@ public class CustomerController {
         CustomerEntity std = customerDao.login(customer);
         CommonResponse<CustomerEntity> response = new CommonResponse<>();
         response.setData(std);
+        return response;
+    }
+    
+    @GetMapping(path=URI_REQUEST_CUSTOMER_BY_CUSTOMER_NUMBER+"/accounts")
+    public CommonResponse<List<AccountEntity>>getaccountByCustomer(@PathVariable(name="customerNumber")String cusnum){
+        CommonResponse<List<AccountEntity>> response = new CommonResponse<>();
+        List<AccountEntity>listaccount=accountDao.getAccountsByCustomerNumber(cusnum);
+        response.setData(listaccount);
+        return response;
+    }
+    
+    @GetMapping(path=URI_REQUEST_CUSTOMER_BY_CUSTOMER_NUMBER+"/wallets")
+    public CommonResponse<List<WalletEntity>>getWAlletByCustomer(@PathVariable(name="customerNumber")String cusnum){
+        CommonResponse<List<WalletEntity>> response = new CommonResponse<>();
+        List<WalletEntity>listwallet=walletDao.getAllWalletByCustomer(cusnum);
+        response.setData(listwallet);
         return response;
     }
 }

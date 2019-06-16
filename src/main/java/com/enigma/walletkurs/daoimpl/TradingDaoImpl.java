@@ -63,8 +63,7 @@ public class TradingDaoImpl implements TradingDao {
 
 	@Override
 	public TradingEntity sellAsset(TradingDto trade) throws EntityNotFoundException, InsufficientAmountException {
-		// TODO Auto-generated method stub
-	List<TradingEntity>temptrade=traderepo.findByTradingId(trade.getTradingId());
+		TradingEntity temptrd=new TradingEntity();
 	Query sumtrading = em.createQuery("select sum(TradingEntity.sisa) from TradingEntity where tradingId=?1");
 	sumtrading.setParameter(1, trade.getTradingId());
 	if (sumtrading.getResultList()==null) {
@@ -74,9 +73,30 @@ public class TradingDaoImpl implements TradingDao {
 		if (tradeamount<trade.getAmount()) {
 			throw new InsufficientAmountException(52, "Error, Trade balance is not enough");
 		}
-		
+		int i=0;
+		Query greater=em.createQuery("from TradingEntity where sisa>0 and tradingid=?1");
+		greater.setParameter(1, trade.getTradingId());
+		List<TradingEntity>temptrades= greater.getResultList();
+		while(trade.getAmount()>0) {
+			if (trade.getAmount()-temptrades.get(i).getAmount()>0) {
+				Double tempbalance=trade.getAmount()-temptrades.get(i).getAmount();
+				temptrades.get(i).setIncome(temptrades.get(i).getRateId().getBuy()*temptrades.get(i).getAmount());
+				trade.setAmount(tempbalance);
+				temptrades.get(i).setSisa(0.0);
+			}else if(trade.getAmount()-temptrades.get(i).getAmount()<0) {
+				Double tempbalance=temptrades.get(i).getAmount()-trade.getAmount();
+				temptrades.get(i).setIncome(temptrades.get(i).getRateId().getBuy()*temptrades.get(i).getAmount());
+				trade.setAmount(0.0);
+				temptrades.get(i).setSisa(tempbalance);
+			}else{
+				trade.setAmount(0.0);
+				temptrades.get(i).setSisa(0.0);				
+			};
+			traderepo.save(temptrades.get(i));
+			i++;
+		}
 	}
-		return null;
+		return temptrd;
 	}
 
 	@Override

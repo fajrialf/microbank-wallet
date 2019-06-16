@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.enigma.walletkurs.dao.AccountDao;
+import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
+import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.AccountEntity;
+import com.enigma.walletkurs.models.TransactionEntity;
+import com.enigma.walletkurs.models.WalletEntity;
 import com.enigma.walletkurs.models.dto.AccountDto;
 
 @RestController
@@ -21,16 +26,30 @@ public class AccountController {
 
     @Autowired
     private AccountDao accountDao;
-
+    
+    @Autowired
+    private TransactionDao transactionDao;
     String accexceptionmsg="Account ID %s not found";
     @PostMapping(value = URI_REQUEST_ACCOUNT)
-    public CommonResponse<AccountEntity> add(@RequestBody AccountDto account) {
+    public CommonResponse<AccountEntity> add(@RequestBody AccountDto account) throws ExistException {
         CommonResponse<AccountEntity> acc = new CommonResponse<>();
         AccountEntity tempAcc = accountDao.create(account);
         acc.setData(tempAcc);
         return acc;
     }
 
+    @GetMapping(value = URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER+"/transactions")
+    public CommonResponse<List<TransactionEntity>> getTransactionsByAccountNumber(@PathVariable(name = "accountNumber") String accountNumber) throws NotFoundException {
+        List<TransactionEntity> transactions = transactionDao.getTransactionsByAccountNumber(accountNumber);
+        CommonResponse<List<TransactionEntity>> resp = new CommonResponse<>();
+        if (transactions == null) {
+            throw new NotFoundException(44, String.format("Transaction list %s doesn't exist.", accountNumber));
+        } else {
+            resp.setData(transactions);
+        }
+        return resp;
+    }
+    
     @PutMapping(value = URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER)
     public CommonResponse<AccountEntity> update(@RequestBody AccountDto account) throws NotFoundException {
         AccountEntity acc = accountDao.getByAccountNumber(account.getAccountNumber());

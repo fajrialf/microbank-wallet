@@ -2,16 +2,16 @@ package com.enigma.walletkurs.models.dto;
 
 public class TransactionTypeDto {
 
-	String transactionType;
+	String code;
 	
 	String description;
 
 	public String getTransactionType() {
-		return transactionType;
+		return code;
 	}
 
 	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
+		this.code = transactionType;
 	}
 
 	public String getDescription() {

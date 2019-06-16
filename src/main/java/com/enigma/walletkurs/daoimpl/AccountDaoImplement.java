@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.enigma.walletkurs.dao.AccountDao;
+import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.AccountTypeEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
@@ -31,16 +32,25 @@ public class AccountDaoImplement implements AccountDao {
 
     @Transactional
     @Override
-    public AccountEntity create(AccountDto account) {
+    public AccountEntity create(AccountDto account) throws ExistException {
     	AccountEntity tempacc= new AccountEntity();
     	AccountTypeEntity acctype= new AccountTypeEntity();
+    	List<AccountEntity>listaccounts= accrepo.findAll();
+    	if (listaccounts!=null && listaccounts.size()==2) {
+    		throw new ExistException(47, "Error,you have reached the maximum account create");
+    	}
+    	if (accrepo.existsByAccountTypeDescriptionAndCustomerNumberCustomerNumber("main",account.getCustomerNumber().getCustomerNumber())) {
+    		acctype.setCode("001");
+    	}else {
+    	if (accrepo.existsByAccountTypeDescriptionAndCustomerNumberCustomerNumber("virtual",account.getCustomerNumber().getCustomerNumber())) {
+    		acctype.setCode("002");
+    	} 
+    	}
     	CustomerEntity custtemp=new CustomerEntity();
     	custtemp.setCustomerNumber(account.getCustomerNumber().getCustomerNumber());
-    	acctype.setCode(account.getAccountType().getCode());
     	tempacc.setAccountName(account.getAccountName());
-    	tempacc.setAccountNumber(account.getAccountNumber());
     	tempacc.setAccountType(acctype);
-    	tempacc.setBalance(account.getBalance());
+    	tempacc.setBalance(0.0);
     	tempacc.setCustomerNumber(custtemp);
     	tempacc.setOpenDate(new Date());
         AccountEntity acc = entityManager.merge(tempacc);
