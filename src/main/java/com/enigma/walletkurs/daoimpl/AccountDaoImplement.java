@@ -16,7 +16,10 @@ import com.enigma.walletkurs.models.AccountTypeEntity;
 import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.dto.AccountDto;
 import com.enigma.walletkurs.repository.AccountRepository;
+<<<<<<< src/main/java/com/enigma/walletkurs/daoimpl/AccountDaoImplement.java
 
+=======
+>>>>>>> src/main/java/com/enigma/walletkurs/daoimpl/AccountDaoImplement.java
 
 public class AccountDaoImplement implements AccountDao {
 

@@ -1,4 +1,3 @@
-
 package com.enigma.walletkurs.daoimpl;
 
 import com.enigma.walletkurs.additional.Autogenerateid;

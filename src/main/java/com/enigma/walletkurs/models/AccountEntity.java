@@ -1,4 +1,3 @@
-
 package com.enigma.walletkurs.models;
 
 import java.util.Date;
