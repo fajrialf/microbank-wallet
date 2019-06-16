@@ -54,24 +54,6 @@ public class WalletImplTest {
 	@Transactional
 	@Before
 	public void setUp() throws ExistException {
-
-		
-
-		AccountTypeEntity acct1= new AccountTypeEntity();
-		acct1.setCode("at 1");
-		acct1.setDescription("main");
-		at.input(acct1);
-		
-		AccountTypeEntity acct2= new AccountTypeEntity();
-		acct2.setCode("at 2");
-		acct2.setDescription("virtual");
-		at.input(acct2);
-
-		AccountTypeEntity acct3= new AccountTypeEntity();
-		acct3.setCode("at 3");
-		acct3.setDescription("sub");
-		at.input(acct3);
-
 		
 		for (int j=0 ;j< 8;j++) {
 			CustomerDto tempcus= new CustomerDto();

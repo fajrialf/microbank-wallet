@@ -1,10 +1,13 @@
 package com.enigma.walletkurs.daoimpl;
 
+import com.enigma.walletkurs.additional.Autogenerateid;
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.dao.TransactionDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
 import com.enigma.walletkurs.exception.InsufficientAmountException;
+import com.enigma.walletkurs.models.CustomerEntity;
 import com.enigma.walletkurs.models.TransactionEntity;
+import com.enigma.walletkurs.models.TransactionTypeEntity;
 import com.enigma.walletkurs.models.dto.TransactionDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,21 +35,47 @@ public class TransactionDaoImplement implements TransactionDao {
     @Override
     public TransactionEntity topUp(TransactionDto transaction) throws EntityNotFoundException {
         Double balance = accountDao.getBalance(transaction.getAccountNumberCredit());
+		TransactionTypeEntity transtype= new TransactionTypeEntity();
+		if (transaction.getAccountNumberCredit().contains("w")) {
+			transtype.setTransactionType("003");
+		}
+		transtype.setTransactionType("002");
         if (balance != null) {
+            Double balance2 = accountDao.getBalance(transaction.getAccountNumberDebit());
+            if (balance2!=null) {
             double result = balance + transaction.getAmount();
-            accountDao.updateBalance(transaction.getAccountNumberCredit(), result);        	
+            double result2 = balance2 - transaction.getAmount();
+            accountDao.updateBalance(transaction.getAccountNumberCredit(), result);
+            accountDao.updateBalance(transaction.getAccountNumberDebit(), result2);
+            }
         }else {
         	throw new EntityNotFoundException(44, "Error,Account not found");
         }
         TransactionEntity temptrans= new TransactionEntity();
+        temptrans.setTransactionId(generateid());
         temptrans.setAccountNumberCredit(transaction.getAccountNumberCredit());
+        temptrans.setAccountNumberDebit(transaction.getAccountNumberDebit());
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
-        temptrans.getTransactionType().setTransactionType(transaction.getTransactionType().getTransactionType());
+        temptrans.setTransactionType(transtype);
         TransactionEntity topUp = entityManager.merge(temptrans);
         return topUp;
     }
 
+     String generateid() {
+    	 String temptrans;
+        Query query= entityManager.createQuery("from TransactionEntity order by transactionId desc");
+        query.setMaxResults(1);
+        if (query.getResultList().isEmpty()) {
+            temptrans="TRX-001";
+        }else {
+        	TransactionEntity trans = (TransactionEntity) query.getSingleResult();
+            Autogenerateid transactionid = new Autogenerateid("TRX-", trans.getTransactionId(), "0", 2);
+            temptrans=transactionid.generatedid();
+        }
+        return temptrans;
+    }
+     
     @Transactional
     @Override
     public TransactionEntity transfer(TransactionDto transaction) throws EntityNotFoundException, InsufficientAmountException {
@@ -54,6 +83,8 @@ public class TransactionDaoImplement implements TransactionDao {
 		Double oldBalanceDebit;
 		Double newBalanceCredit;
 		Double newBalanceDebit;
+		TransactionTypeEntity transtype= new TransactionTypeEntity();
+		transtype.setTransactionType("001");
         oldBalanceCredit = accountDao.getBalance(transaction.getAccountNumberCredit());
         oldBalanceDebit = accountDao.getBalance(transaction.getAccountNumberDebit());
         if (oldBalanceCredit == null || oldBalanceDebit == null) {
@@ -65,14 +96,15 @@ public class TransactionDaoImplement implements TransactionDao {
         	}
             newBalanceCredit = oldBalanceCredit + transaction.getAmount();
         }
-
         accountDao.updateBalance(transaction.getAccountNumberCredit(), newBalanceCredit);
         accountDao.updateBalance(transaction.getAccountNumberDebit(), newBalanceDebit);
         TransactionEntity temptrans= new TransactionEntity();
+        temptrans.setTransactionId(generateid());
         temptrans.setAccountNumberCredit(transaction.getAccountNumberCredit());
+        temptrans.setAccountNumberDebit(transaction.getAccountNumberDebit());
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
-        temptrans.getTransactionType().setTransactionType(transaction.getTransactionType().getTransactionType());
+        temptrans.setTransactionType(transtype);
         TransactionEntity transfer = entityManager.merge(temptrans);
         return transfer;
     }
