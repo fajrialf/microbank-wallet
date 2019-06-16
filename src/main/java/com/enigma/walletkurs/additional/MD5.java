@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
-    String generatedPassword = null;
+	String generatedPassword = null;
 
     public String getSecurePassword(String value) {
         try {
@@ -27,4 +27,5 @@ public class MD5 {
         }
         return generatedPassword;
     }
+
 }

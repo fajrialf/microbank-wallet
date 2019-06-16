@@ -1,5 +1,7 @@
 package com.enigma.walletkurs.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,11 +18,20 @@ public class ExchangeEntity {
 	@Column(name="rate_id")
 	int rateId;
 	
+	@Column(name="ccy1")
+	String cCy1;
+	
+	@Column(name="ccy2")
+	String cCy2;
+	
+	@Column(name="date")
+	Date date;
+	
 	@Column(name="buy")
-	Float buy;
+	Double buy;
 	
 	@Column(name="sell")
-	Float sell;
+	Double sell;
 
 	public int getRateId() {
 		return rateId;
@@ -30,21 +41,43 @@ public class ExchangeEntity {
 		this.rateId = rateId;
 	}
 
-	public Float getBuy() {
+	public String getcCy1() {
+		return cCy1;
+	}
+
+	public void setcCy1(String cCy1) {
+		this.cCy1 = cCy1;
+	}
+
+	public String getcCy2() {
+		return cCy2;
+	}
+
+	public void setcCy2(String cCy2) {
+		this.cCy2 = cCy2;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Double getBuy() {
 		return buy;
 	}
 
-	public void setBuy(Float buy) {
+	public void setBuy(Double buy) {
 		this.buy = buy;
 	}
 
-	public Float getSell() {
+	public Double getSell() {
 		return sell;
 	}
 
-	public void setSell(Float sell) {
+	public void setSell(Double sell) {
 		this.sell = sell;
 	}
-	
-	
 }

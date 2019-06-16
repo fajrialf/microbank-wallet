@@ -6,39 +6,58 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.enigma.walletkurs.dao.AccountDao;
+import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
+import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.AccountEntity;
-import com.enigma.walletkurs.models.CustomerEntity;
+import com.enigma.walletkurs.models.TransactionEntity;
+import com.enigma.walletkurs.models.WalletEntity;
+import com.enigma.walletkurs.models.dto.AccountDto;
 
 @RestController
 public class AccountController {
 
-    public static final String URI_REQUEST_ACCOUNT = "account";
+	public static final String URI_REQUEST_ACCOUNT = "account";
     public static final String URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER = "account/{accountNumber}";
     public static final String URI_REQUEST_ACCOUNTS_BY_CUSTOMER_NUMBER = "accounts/{customerNumber}";
 
     @Autowired
     private AccountDao accountDao;
-
+    
+    @Autowired
+    private TransactionDao transactionDao;
+    String accexceptionmsg="Account ID %s not found";
     @PostMapping(value = URI_REQUEST_ACCOUNT)
-    public CommonResponse<AccountEntity> add(@RequestBody AccountEntity account) {
+    public CommonResponse<AccountEntity> add(@RequestBody AccountDto account) throws ExistException {
         CommonResponse<AccountEntity> acc = new CommonResponse<>();
         AccountEntity tempAcc = accountDao.create(account);
         acc.setData(tempAcc);
         return acc;
     }
 
+    @GetMapping(value = URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER+"/transactions")
+    public CommonResponse<List<TransactionEntity>> getTransactionsByAccountNumber(@PathVariable(name = "accountNumber") String accountNumber) throws NotFoundException {
+        List<TransactionEntity> transactions = transactionDao.getTransactionsByAccountNumber(accountNumber);
+        CommonResponse<List<TransactionEntity>> resp = new CommonResponse<>();
+        if (transactions == null) {
+            throw new NotFoundException(44, String.format("Transaction list %s doesn't exist.", accountNumber));
+        } else {
+            resp.setData(transactions);
+        }
+        return resp;
+    }
+    
     @PutMapping(value = URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER)
-    public CommonResponse<AccountEntity> update(@RequestBody AccountEntity account) throws NotFoundException {
+    public CommonResponse<AccountEntity> update(@RequestBody AccountDto account) throws NotFoundException {
         AccountEntity acc = accountDao.getByAccountNumber(account.getAccountNumber());
         CommonResponse<AccountEntity> response = new CommonResponse<>();
         if (acc == null) {
             throw new NotFoundException(44, "Customer data doesn't exist!");
         } else {
-            accountDao.update(account);
-            response.setData(account);
+            response.setData(accountDao.update(account));
         }
         return response;
     }
@@ -48,7 +67,7 @@ public class AccountController {
         AccountEntity account = accountDao.getByAccountNumber(accountNumber);
         CommonResponse<AccountEntity> response = new CommonResponse<>();
         if (account == null) {
-            throw new NotFoundException(44, String.format("Account ID %d not found", accountNumber));
+            throw new NotFoundException(44, String.format(accexceptionmsg, accountNumber));
         } else {
             response.setData(account);
         }
@@ -57,11 +76,11 @@ public class AccountController {
 
     @GetMapping(value = URI_REQUEST_ACCOUNTS_BY_CUSTOMER_NUMBER)
     public CommonResponse<List<AccountEntity>> getAccountsByCif(
-            @PathVariable(name = "customerNumber") CustomerEntity customerNumber) throws EntityNotFoundException {
+            @PathVariable(name = "customerNumber") String customerNumber) throws EntityNotFoundException {
         List<AccountEntity> listAccount = accountDao.getAccountsByCustomerNumber(customerNumber);
         CommonResponse<List<AccountEntity>> resp = new CommonResponse<>();
         if (listAccount == null) {
-            throw new EntityNotFoundException(44, String.format("Account ID %d not found", customerNumber));
+            throw new EntityNotFoundException(44, String.format(accexceptionmsg, customerNumber));
         } else {
             resp.setData(listAccount);
         }
@@ -73,7 +92,7 @@ public class AccountController {
         AccountEntity check = accountDao.getByAccountNumber(accountNumber);
         CommonResponse<AccountEntity> resp = new CommonResponse<>();
         if (check == null) {
-            throw new NotFoundException(44, String.format("Account ID %d not found", accountNumber));
+            throw new NotFoundException(44, String.format(accexceptionmsg, accountNumber));
         } else {
             resp.setData(accountDao.delete(check));
         }

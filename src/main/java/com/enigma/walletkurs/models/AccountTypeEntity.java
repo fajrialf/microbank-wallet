@@ -12,23 +12,11 @@ import javax.persistence.Table;
 public class AccountTypeEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="account_type_id")
-	int accountType;
-	
 	@Column(name="code")
 	String code;
 	
 	@Column(name="description")
 	String description;
-
-	public int getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(int accountType) {
-		this.accountType = accountType;
-	}
 
 	public String getCode() {
 		return code;

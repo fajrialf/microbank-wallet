@@ -1,15 +1,12 @@
 package com.enigma.walletkurs.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,12 +22,12 @@ public class AccountEntity {
 	@Column(name = "account_name")
 	String accountName;
 
-	@OneToOne
-	@JoinColumn(name = "account_type_id")
+	@ManyToOne
+	@JoinColumn(name = "code")
 	AccountTypeEntity accountType;
 
 	@Column(name = "balance")
-	Float balance;
+	Double balance;
 
 	@Column(name = "open_date")
 	Date openDate;
@@ -39,12 +36,11 @@ public class AccountEntity {
 	@JoinColumn(name = "customer_number")
 	CustomerEntity customerNumber;
 
-	
-	public Float getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Float balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 

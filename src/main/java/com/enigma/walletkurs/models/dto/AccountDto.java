@@ -10,23 +10,22 @@ public class AccountDto {
 
 	AccountTypeDto accountType;
 
-	Float balance;
+	Double balance;
 
 	Date openDate;
 
 	CustomerDto customerNumber;
 
-	
-	public Float getBalance() {
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Float balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
-	}
-
-	public String getAccountNumber() {
-		return accountNumber;
 	}
 
 	public void setAccountNumber(String accountNumber) {
@@ -39,7 +38,7 @@ public class AccountDto {
 
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
-	}	
+	}
 
 	public AccountTypeDto getAccountType() {
 		return accountType;

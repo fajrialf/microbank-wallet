@@ -4,8 +4,6 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -42,6 +40,13 @@ public class CustomerEntity {
 	@Column(name = "password")
 	String password;
 
+	public CustomerEntity(){
+		
+	}
+	public CustomerEntity(String cusnum){
+		this.customerNumber=cusnum;
+	}
+	
 	public String getCustomerNumber() {
 		return customerNumber;
 	}

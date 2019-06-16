@@ -22,6 +22,14 @@ public class CustomerDto {
 
 	String password;
 
+	public CustomerDto(){
+		
+	}
+	
+	public CustomerDto(String cusnum){
+		this.customerNumber=cusnum;
+	}
+
 	public String getCustomerNumber() {
 		return customerNumber;
 	}
