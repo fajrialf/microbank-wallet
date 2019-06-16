@@ -29,6 +29,8 @@ public class AccountController {
     
     @Autowired
     private TransactionDao transactionDao;
+    
+    
     String accexceptionmsg="Account ID %s not found";
     @PostMapping(value = URI_REQUEST_ACCOUNT)
     public CommonResponse<AccountEntity> add(@RequestBody AccountDto account) throws ExistException {
