@@ -95,14 +95,6 @@ public class WalletImplTest {
 			walletdao.createwallet(wallen);
 		}		
 	}
-	
-	@Test(expected=ExistException.class)
-	public void inpuwallet() throws ExistException{
-		WalletDto newwal= new WalletDto();
-		newwal.setDescription("ini desc 2");
-		newwal.setCustomerNumber(new CustomerDto("CS-001"));
-		walletdao.createwallet(newwal);
-	}
 
 	@Test
 	public void inputwalletsuccess() throws ExistException{
