@@ -3,6 +3,7 @@ package com.enigma.walletkurs.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.dao.AccountTypeDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
 import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
@@ -20,6 +22,7 @@ import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.TransactionEntity;
 import com.enigma.walletkurs.models.dto.AccountDto;
+import com.enigma.walletkurs.models.AccountTypeEntity;
 
 @RestController
 public class AccountController {
@@ -27,14 +30,17 @@ public class AccountController {
 	public static final String URI_REQUEST_ACCOUNT = "account";
     public static final String URI_REQUEST_ACCOUNT_BY_ACCOUNT_NUMBER = "account/{accountNumber}";
     public static final String URI_REQUEST_ACCOUNTS_BY_CUSTOMER_NUMBER = "accounts/{customerNumber}";
+    public static final String URI_REQUEST_LIST_ACCOUNT_TYPE = "account_type";
 
     @Autowired
     private AccountDao accountDao;
     
     @Autowired
     private TransactionDao transactionDao;
-    
-    
+
+    @Autowired
+    private AccountTypeDao accountTypeDao;
+
     String accexceptionmsg="Account ID %s not found";
     @PostMapping(value = URI_REQUEST_ACCOUNT)
     public CommonResponse<AccountEntity> add(@RequestBody AccountDto account) throws ExistException {
@@ -103,5 +109,18 @@ public class AccountController {
             resp.setData(accountDao.delete(check));
         }
         return resp;
+    }
+
+    @GetMapping(value = URI_REQUEST_LIST_ACCOUNT_TYPE , produces = MediaType.APPLICATION_JSON_VALUE)
+    public CommonResponse<List<AccountTypeEntity>> getListAccountType() throws NotFoundException {
+        List<AccountTypeEntity> accountTypes = accountTypeDao.getListAccountType();
+        CommonResponse<List<AccountTypeEntity>> response = new CommonResponse<>();
+
+        if(accountTypes == null){
+            throw new NotFoundException(44,"List account type doesn't exist.");
+        } else {
+            response.setData(accountTypes);
+        }
+        return response;
     }
 }
