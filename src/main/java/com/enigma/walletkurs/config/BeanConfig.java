@@ -3,12 +3,16 @@ package com.enigma.walletkurs.config;
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.dao.AccountTypeDao;
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.dao.ExchangeDao;
+import com.enigma.walletkurs.dao.TradingDao;
 import com.enigma.walletkurs.dao.TransactionDao;
 import com.enigma.walletkurs.dao.TransactionTypeDao;
 import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.daoimpl.AccountDaoImplement;
 import com.enigma.walletkurs.daoimpl.AccountTypeDaoImpl;
 import com.enigma.walletkurs.daoimpl.CustomerDaoImplement;
+import com.enigma.walletkurs.daoimpl.ExchangeDaoImpl;
+import com.enigma.walletkurs.daoimpl.TradingDaoImpl;
 import com.enigma.walletkurs.daoimpl.TransactionDaoImplement;
 import com.enigma.walletkurs.daoimpl.TransactionTypeDaoImpl;
 import com.enigma.walletkurs.daoimpl.WalletDaoImplement;
@@ -42,6 +46,16 @@ public class BeanConfig {
     @Bean
     public TransactionTypeDao transactionTypeDao() {
     	return new TransactionTypeDaoImpl();
+    }
+    
+    @Bean
+    public ExchangeDao exchangeDao() {
+    	return new ExchangeDaoImpl();
+    }
+    
+    @Bean
+    public TradingDao tradeDao() {
+    	return new TradingDaoImpl();
     }
     
     @Bean

@@ -12,5 +12,4 @@ public interface TradingDao {
 
 	TradingEntity buyAsset(TradingDto trade) throws InsufficientAmountException;
 	TradingEntity sellAsset(TradingDto trade) throws EntityNotFoundException, InsufficientAmountException;
-	List<ExchangeEntity>listRate();
 }

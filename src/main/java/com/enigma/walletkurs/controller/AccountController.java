@@ -3,18 +3,22 @@ package com.enigma.walletkurs.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.dao.TransactionDao;
-import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
 import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.exception.NotFoundException;
 import com.enigma.walletkurs.helper.response.CommonResponse;
 import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.TransactionEntity;
-import com.enigma.walletkurs.models.WalletEntity;
 import com.enigma.walletkurs.models.dto.AccountDto;
 
 @RestController

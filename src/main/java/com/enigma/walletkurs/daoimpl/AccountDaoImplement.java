@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.enigma.walletkurs.additional.Autogenerateid;
 import com.enigma.walletkurs.dao.AccountDao;
+import com.enigma.walletkurs.dao.TransactionDao;
 import com.enigma.walletkurs.exception.ExistException;
 import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.AccountTypeEntity;
@@ -26,6 +27,9 @@ public class AccountDaoImplement implements AccountDao {
 
     @Autowired
     private AccountRepository accrepo;
+    
+    @Autowired
+    private TransactionDao transDao;
     
     @Override
     public AccountEntity getByAccountNumber(String accountNumber) {
@@ -65,8 +69,8 @@ public class AccountDaoImplement implements AccountDao {
     	tempacc.setBalance(0.0);
     	tempacc.setCustomerNumber(custtemp);
     	tempacc.setOpenDate(new Date());
-        AccountEntity acc = entityManager.merge(tempacc);
-        return acc;
+    	transDao.openaccount(tempacc);
+        return entityManager.merge(tempacc);
     }
 
     @Transactional
@@ -79,8 +83,7 @@ public class AccountDaoImplement implements AccountDao {
     	tempacc.setBalance(account.getBalance());
     	tempacc.getCustomerNumber().setCustomerNumber(account.getCustomerNumber().getCustomerNumber());
     	tempacc.setOpenDate(new Date());
-        AccountEntity acc = entityManager.merge(tempacc);
-        return acc;
+        return entityManager.merge(tempacc);
     }
 
     @Transactional
@@ -93,10 +96,8 @@ public class AccountDaoImplement implements AccountDao {
     @Transactional
     @Override
     public Double getBalance(String accountNumber) {
-        Double balance;
         AccountEntity account = entityManager.find(AccountEntity.class, accountNumber);
-        balance = account.getBalance();
-        return balance;
+        return account.getBalance();
     }
 
     @Transactional
@@ -109,9 +110,12 @@ public class AccountDaoImplement implements AccountDao {
 
 	@Override
 	public List<AccountEntity> getAccountsByCustomerNumber(String string) {
-		// TODO Auto-generated method stub
-		List<AccountEntity>listaccount=accrepo.findByCustomerNumberCustomerNumber(string);
-		return listaccount;
+		return accrepo.findByCustomerNumberCustomerNumber(string);
+	}
+
+	@Override
+	public AccountEntity getByDescription(String accountNumber,String desc) {
+		return accrepo.findByCustomerNumberCustomerNumberAndAccountTypeDescription(accountNumber, desc);
 	}
 
 }

@@ -1,17 +1,7 @@
 package com.enigma.walletkurs.daoimpl;
 
-import com.enigma.walletkurs.additional.Autogenerateid;
-import com.enigma.walletkurs.dao.AccountDao;
-import com.enigma.walletkurs.dao.TransactionDao;
-import com.enigma.walletkurs.exception.EntityNotFoundException;
-import com.enigma.walletkurs.exception.InsufficientAmountException;
-import com.enigma.walletkurs.models.CustomerEntity;
-import com.enigma.walletkurs.models.TransactionEntity;
-import com.enigma.walletkurs.models.TransactionTypeEntity;
-import com.enigma.walletkurs.models.dto.TransactionDto;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,8 +10,21 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import java.util.Date;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.enigma.walletkurs.additional.Autogenerateid;
+import com.enigma.walletkurs.dao.AccountDao;
+import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.exception.EntityNotFoundException;
+import com.enigma.walletkurs.exception.InsufficientAmountException;
+import com.enigma.walletkurs.models.AccountEntity;
+import com.enigma.walletkurs.models.TradingEntity;
+import com.enigma.walletkurs.models.TransactionEntity;
+import com.enigma.walletkurs.models.TransactionTypeEntity;
+import com.enigma.walletkurs.models.dto.AccountDto;
+import com.enigma.walletkurs.models.dto.TradingDto;
+import com.enigma.walletkurs.models.dto.TransactionDto;
 
 public class TransactionDaoImplement implements TransactionDao {
 
@@ -31,6 +34,8 @@ public class TransactionDaoImplement implements TransactionDao {
     @Autowired
     private AccountDao accountDao;
 
+    String accerr="Error,Account not found";
+    
     @Transactional
     @Override
     public TransactionEntity topUp(TransactionDto transaction) throws EntityNotFoundException {
@@ -41,15 +46,15 @@ public class TransactionDaoImplement implements TransactionDao {
 		}
 		transtype.setTransactionType("002");
         if (balance != null) {
-            Double balance2 = accountDao.getBalance(transaction.getAccountNumberDebit());
-            if (balance2!=null) {
+//            Double balance2 = accountDao.getBalance(transaction.getAccountNumberDebit());
+//            if (balance2!=null) {
             double result = balance + transaction.getAmount();
-            double result2 = balance2 - transaction.getAmount();
+//            double result2 = balance2 - transaction.getAmount();
             accountDao.updateBalance(transaction.getAccountNumberCredit(), result);
-            accountDao.updateBalance(transaction.getAccountNumberDebit(), result2);
-            }
+//            accountDao.updateBalance(transaction.getAccountNumberDebit(), result2);
+//            }
         }else {
-        	throw new EntityNotFoundException(44, "Error,Account not found");
+        	throw new EntityNotFoundException(44, accerr);
         }
         TransactionEntity temptrans= new TransactionEntity();
         temptrans.setTransactionId(generateid());
@@ -58,8 +63,7 @@ public class TransactionDaoImplement implements TransactionDao {
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
         temptrans.setTransactionType(transtype);
-        TransactionEntity topUp = entityManager.merge(temptrans);
-        return topUp;
+        return entityManager.merge(temptrans);
     }
 
      String generateid() {
@@ -88,7 +92,7 @@ public class TransactionDaoImplement implements TransactionDao {
         oldBalanceCredit = accountDao.getBalance(transaction.getAccountNumberCredit());
         oldBalanceDebit = accountDao.getBalance(transaction.getAccountNumberDebit());
         if (oldBalanceCredit == null || oldBalanceDebit == null) {
-        	throw new EntityNotFoundException(44, "Error,Account not found");
+        	throw new EntityNotFoundException(44, accerr);
         }else {
             newBalanceDebit = oldBalanceDebit - transaction.getAmount();
         	if (newBalanceDebit <0) {
@@ -105,8 +109,7 @@ public class TransactionDaoImplement implements TransactionDao {
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
         temptrans.setTransactionType(transtype);
-        TransactionEntity transfer = entityManager.merge(temptrans);
-        return transfer;
+        return entityManager.merge(temptrans);
     }
 
     @Transactional
@@ -114,7 +117,7 @@ public class TransactionDaoImplement implements TransactionDao {
     public TransactionEntity withdraw(TransactionDto transaction) throws EntityNotFoundException, InsufficientAmountException {
         Double balance = accountDao.getBalance(transaction.getAccountNumberDebit());
         if (balance == null) {
-        	throw new EntityNotFoundException(44, "Error,Account not found");
+        	throw new EntityNotFoundException(44, accerr);
         }else {
             Double result = balance - transaction.getAmount();
         	if (result <0 ) {
@@ -127,8 +130,7 @@ public class TransactionDaoImplement implements TransactionDao {
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
         temptrans.getTransactionType().setTransactionType(transaction.getTransactionType().getTransactionType());
-        TransactionEntity withdraw = entityManager.merge(temptrans);
-        return withdraw;
+        return entityManager.merge(temptrans);
     }
 
     @Override
@@ -152,22 +154,34 @@ public class TransactionDaoImplement implements TransactionDao {
         return q.getResultList();
     }
 
+    TransactionEntity inputentity(String accdebit,String accCredit, Double amount,String type) {
+		TransactionEntity temptrans= new TransactionEntity();
+		temptrans.setAccountNumberCredit(accCredit);
+		temptrans.setAccountNumberDebit(accdebit);
+		temptrans.setAmount(amount);
+		temptrans.setDate(new Date());
+		temptrans.setTransactionId(generateid());
+		TransactionTypeEntity ttype=new TransactionTypeEntity();
+		ttype.setTransactionType(type);
+		temptrans.setTransactionType(ttype);
+		return temptrans;
+    }
+    
 	@Override
-	public TransactionEntity openaccount(TransactionDto transaction) {
-		// TODO Auto-generated method stub
-		return null;
+	public TransactionEntity openaccount(AccountEntity transaction) {
+		TransactionEntity temptrans= inputentity(transaction.getAccountNumber(), "0", transaction.getBalance(), "006");
+		return entityManager.merge(temptrans);
+	}
+	
+	@Override
+	public TransactionEntity sellAsset(String account,Double amount) {
+		TransactionEntity temptrans=inputentity("0", account, amount, "005");
+		return entityManager.merge(temptrans);
 	}
 
 	@Override
-	public TransactionEntity buyAsset(TransactionDto transaction) {
-		// TODO Auto-generated method stub
-		return null;
+	public TransactionEntity buyAsset(String account, Double amount) {
+		TransactionEntity temptrans=inputentity(account, "0", amount, "004");
+		return entityManager.merge(temptrans);
 	}
-
-	@Override
-	public TransactionEntity sellAsset(TransactionDto transaction) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

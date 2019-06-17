@@ -13,7 +13,6 @@ public class AccountTypeDaoImpl implements AccountTypeDao{
 	
 	@Override
 	public AccountTypeEntity input(AccountTypeEntity acctype) {
-		AccountTypeEntity data=em.merge(acctype);
-		return data;
+		return em.merge(acctype);
 	}
 }

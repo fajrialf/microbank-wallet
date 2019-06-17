@@ -1,19 +1,18 @@
 package com.enigma.walletkurs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,11 +20,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.enigma.walletkurs.dao.AccountDao;
 import com.enigma.walletkurs.dao.AccountTypeDao;
 import com.enigma.walletkurs.dao.CustomerDao;
+import com.enigma.walletkurs.dao.TransactionDao;
+import com.enigma.walletkurs.dao.TransactionTypeDao;
 import com.enigma.walletkurs.dao.WalletDao;
 import com.enigma.walletkurs.exception.ExistException;
-import com.enigma.walletkurs.models.AccountEntity;
 import com.enigma.walletkurs.models.AccountTypeEntity;
-import com.enigma.walletkurs.models.CustomerEntity;
+import com.enigma.walletkurs.models.TransactionTypeEntity;
 import com.enigma.walletkurs.models.WalletAccountEntity;
 import com.enigma.walletkurs.models.WalletEntity;
 import com.enigma.walletkurs.models.dto.AccountDto;
@@ -50,6 +50,8 @@ public class WalletImplTest {
 	@Autowired
 	private AccountTypeDao at;
 	
+	@Autowired
+	private TransactionTypeDao transtype;
 	
 	@Transactional
 	@Before
@@ -65,6 +67,11 @@ public class WalletImplTest {
 		acct2.setCode("002");
 		acct2.setDescription("virtual");
 		at.input(acct2);
+		
+		TransactionTypeEntity ttype=new TransactionTypeEntity();
+		ttype.setDescription("open account");
+		ttype.setTransactionType("006");
+		transtype.input(ttype);
 		for (int j=0 ;j< 8;j++) {
 			CustomerDto tempcus= new CustomerDto();
 			tempcus.setNik("nik "+j);

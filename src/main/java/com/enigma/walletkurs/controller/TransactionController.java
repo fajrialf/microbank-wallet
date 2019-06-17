@@ -24,6 +24,8 @@ public class TransactionController {
     @Autowired
     private TransactionDao transactionDao;
 
+    String transerr="Transaction failed!";
+    
     @GetMapping(value = URI_REQUEST_TRANSACTION_BY_ID)
     public CommonResponse<TransactionEntity> getTransactionById(@PathVariable(name = "transactionId") String transactionId) throws NotFoundException {
         TransactionEntity transaction = transactionDao.getTransactionById(transactionId);
@@ -53,7 +55,7 @@ public class TransactionController {
         CommonResponse<TransactionEntity> topUp = new CommonResponse<>();
         TransactionEntity cst = transactionDao.topUp(transaction);
         if (cst == null) {
-            throw new NotFoundException(44, "Transaction failed!");
+            throw new NotFoundException(44, transerr);
         } else {
             topUp.setData(cst);
         }
@@ -65,7 +67,7 @@ public class TransactionController {
         CommonResponse<TransactionEntity> transfer = new CommonResponse<>();
         TransactionEntity cst = transactionDao.transfer(transaction);
         if (cst == null) {
-            throw new NotFoundException(44, "Transaction failed!");
+            throw new NotFoundException(44, transerr);
         } else {
             transfer.setData(cst);
         }
@@ -77,7 +79,7 @@ public class TransactionController {
         CommonResponse<TransactionEntity> withdraw = new CommonResponse<>();
         TransactionEntity cst = transactionDao.withdraw(transaction);
         if (cst == null) {
-            throw new NotFoundException(44, "Transaction failed!");
+            throw new NotFoundException(44, transerr);
         }
         else {
             withdraw.setData(cst);
