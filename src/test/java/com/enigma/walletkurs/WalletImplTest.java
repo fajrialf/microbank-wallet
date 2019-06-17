@@ -54,7 +54,17 @@ public class WalletImplTest {
 	@Transactional
 	@Before
 	public void setUp() throws ExistException {
-		
+
+
+		AccountTypeEntity acct1= new AccountTypeEntity();
+		acct1.setCode("001");
+		acct1.setDescription("main");
+		at.input(acct1);
+
+		AccountTypeEntity acct2= new AccountTypeEntity();
+		acct2.setCode("002");
+		acct2.setDescription("virtual");
+		at.input(acct2);
 		for (int j=0 ;j< 8;j++) {
 			CustomerDto tempcus= new CustomerDto();
 			tempcus.setNik("nik "+j);
@@ -69,8 +79,7 @@ public class WalletImplTest {
 			AccountDto accen = new AccountDto();
 
 			AccountTypeDto acct4= new AccountTypeDto();
-			acct4.setAccountType(1);
-			acct4.setCode("at 1");
+			acct4.setCode("001");
 			acct4.setDescription("main");
 			accen.setAccountNumber("acc "+h);
 			accen.setAccountType(acct4);
@@ -85,13 +94,6 @@ public class WalletImplTest {
 			wallen.setCustomerNumber(newcust);
 			walletdao.createwallet(wallen);
 		}		
-	}
-	
-	@Test(expected=ExistException.class)
-	public void inpuwallet() throws ExistException{
-		WalletDto newwal= new WalletDto();
-		newwal.setDescription("ini desc 2");
-		walletdao.createwallet(newwal);
 	}
 
 	@Test
@@ -111,7 +113,7 @@ public class WalletImplTest {
 		WalletAccountDto walac= new WalletAccountDto();
 		AccountDto newacc= new AccountDto();
 		WalletDto newwal= new WalletDto();
-		newacc.setAccountNumber("acc 2");
+		newacc.setAccountNumber("ACC-002");
 		newwal.setWalletId("W-002");
 		walac.setAccountNumber(newacc);
 		walac.setWalletId(newwal);

@@ -10,7 +10,6 @@ public class Autogenerateid {
 		this.current=current;
 		this.pad=pad;
 		this.length=length;
-
 	}
 	
 	public String generatedid() {
