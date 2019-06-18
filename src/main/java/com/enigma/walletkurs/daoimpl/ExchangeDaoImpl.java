@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.enigma.walletkurs.dao.ExchangeDao;
@@ -17,13 +18,20 @@ public class ExchangeDaoImpl implements ExchangeDao{
 	@Transactional
 	@Override
 	public ExchangeEntity createentity(ExchangeEntity exchange) {
+		Query query= em.createQuery("from ExchangeEntity order by rateId desc");
+		query.setMaxResults(1);
+		if (!query.getResultList().isEmpty()) {
+			ExchangeEntity tempxexc= (ExchangeEntity) query.getSingleResult();
+			if (tempxexc.getBuy().equals(exchange.getBuy()) && tempxexc.getSell().equals(exchange.getSell())) {
+				return null;
+			}
+		}
 		return em.merge(exchange);
 	}
 
 	@Override
 	public List<ExchangeEntity> listRate() {
-		// TODO Auto-generated method stub
-		return null;
+		Query query=em.createQuery("from ExchangeEntity order by rateId desc");
+		return query.getResultList();
 	}
-
 }

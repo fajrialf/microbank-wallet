@@ -20,7 +20,7 @@ public class MD5 {
             md.update(value.getBytes());
             //Get the hash's bytes
             byte[] bytes = md.digest();
-            /*This bytes[] has bytes in decimal format;
+            /*This bytes has bytes in decimal format;
             Convert it to hexadecimal format*/
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
