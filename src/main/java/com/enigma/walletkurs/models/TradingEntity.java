@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,16 +19,8 @@ public class TradingEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID")
 	int id;
-	
-	public int getId() {
-		return id;
-	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	@Column(name="trading_id")
+	@Column(name="trading_id",unique=false)
 	String tradingId;
 	
 	public Double getSisa() {
@@ -121,4 +112,12 @@ public class TradingEntity {
 		this.income = income;
 	}
 
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

@@ -45,13 +45,16 @@ public class AccountDaoImplement implements AccountDao {
     	if (listaccounts!=null && listaccounts.size()==2) {
     		throw new ExistException(47, "Error,you have reached the maximum account create");
     	}
+    	if (account.getAccountType() != null) {
+        	acctype.setCode(account.getAccountType().getCode());
+    	}else {
     	if (!accrepo.existsByAccountTypeDescriptionAndCustomerNumberCustomerNumber("main",account.getCustomerNumber().getCustomerNumber())) {
     		acctype.setCode("001");
     	}else {
     	if (!accrepo.existsByAccountTypeDescriptionAndCustomerNumberCustomerNumber("virtual",account.getCustomerNumber().getCustomerNumber())) {
     		acctype.setCode("002");
     	} 
-    	}        
+    	}}
     	Query query = entityManager.createQuery("FROM AccountEntity order by accountNumber desc");
         query.setMaxResults(1);
 
@@ -97,6 +100,9 @@ public class AccountDaoImplement implements AccountDao {
     @Override
     public Double getBalance(String accountNumber) {
         AccountEntity account = entityManager.find(AccountEntity.class, accountNumber);
+        if (account == null) {
+        	return null;
+        }
         return account.getBalance();
     }
 

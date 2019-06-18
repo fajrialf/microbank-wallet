@@ -19,11 +19,8 @@ import com.enigma.walletkurs.dao.TransactionDao;
 import com.enigma.walletkurs.exception.EntityNotFoundException;
 import com.enigma.walletkurs.exception.InsufficientAmountException;
 import com.enigma.walletkurs.models.AccountEntity;
-import com.enigma.walletkurs.models.TradingEntity;
 import com.enigma.walletkurs.models.TransactionEntity;
 import com.enigma.walletkurs.models.TransactionTypeEntity;
-import com.enigma.walletkurs.models.dto.AccountDto;
-import com.enigma.walletkurs.models.dto.TradingDto;
 import com.enigma.walletkurs.models.dto.TransactionDto;
 
 public class TransactionDaoImplement implements TransactionDao {
@@ -65,9 +62,8 @@ public class TransactionDaoImplement implements TransactionDao {
         temptrans.setTransactionType(transtype);
         return entityManager.merge(temptrans);
     }
-
-     String generateid() {
-    	 String temptrans;
+    String generateid() {
+    	String temptrans;
         Query query= entityManager.createQuery("from TransactionEntity order by transactionId desc");
         query.setMaxResults(1);
         if (query.getResultList().isEmpty()) {
@@ -95,7 +91,7 @@ public class TransactionDaoImplement implements TransactionDao {
         	throw new EntityNotFoundException(44, accerr);
         }else {
             newBalanceDebit = oldBalanceDebit - transaction.getAmount();
-        	if (newBalanceDebit <0) {
+        	if (newBalanceDebit < 0) {
         		throw new InsufficientAmountException(52, "Amount is not enough");
         	}
             newBalanceCredit = oldBalanceCredit + transaction.getAmount();
@@ -166,19 +162,22 @@ public class TransactionDaoImplement implements TransactionDao {
 		temptrans.setTransactionType(ttype);
 		return temptrans;
     }
-    
+
+	@Transactional
 	@Override
 	public TransactionEntity openaccount(AccountEntity transaction) {
 		TransactionEntity temptrans= inputentity(transaction.getAccountNumber(), "0", transaction.getBalance(), "006");
 		return entityManager.merge(temptrans);
 	}
-	
+
+	@Transactional
 	@Override
 	public TransactionEntity sellAsset(String account,Double amount) {
 		TransactionEntity temptrans=inputentity("0", account, amount, "005");
 		return entityManager.merge(temptrans);
 	}
 
+	@Transactional
 	@Override
 	public TransactionEntity buyAsset(String account, Double amount) {
 		TransactionEntity temptrans=inputentity(account, "0", amount, "004");

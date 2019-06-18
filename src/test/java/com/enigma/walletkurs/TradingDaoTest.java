@@ -60,7 +60,7 @@ public class TradingDaoTest {
 	
 	@Transactional
 	@Before
-	public void setUp() throws ExistException, EntityNotFoundException {
+	public void setUp() throws ExistException, EntityNotFoundException, InsufficientAmountException {
 		AccountTypeEntity acct1= new AccountTypeEntity();
 		acct1.setCode("001");
 		acct1.setDescription("Main");
@@ -71,7 +71,6 @@ public class TradingDaoTest {
 		acct2.setDescription("Virtual");
 		at.input(acct2);
 	
-
 		TransactionTypeEntity ttype=new TransactionTypeEntity();
 		ttype.setDescription("open account");
 		ttype.setTransactionType("006");
@@ -113,6 +112,7 @@ public class TradingDaoTest {
 			AccountTypeDto acct4= new AccountTypeDto();
 			acct4.setCode("002");
 			accen.setAccountType(acct4);
+			accen.setAccountName("nama "+h);
 			accen.setCustomerNumber(new CustomerDto("CS-00"+(h+1)));
 			accDao.create(accen);
 		}
@@ -157,6 +157,51 @@ public class TradingDaoTest {
 		temptrade.setTradingId("CS-002");
 		temptrade.setCcy("USD");
 		temptrade.setType("b");
-		tradedao.buyAsset(temptrade);		
+		tradedao.buyAsset(temptrade);
+		assertEquals(157094, accDao.getBalance("ACC-002").intValue());
+	}
+	
+	@Test(expected=InsufficientAmountException.class)
+	public void tradebuyfail() throws InsufficientAmountException {
+		TradingDto temptrade= new TradingDto();
+		temptrade.setAmount(20.1);
+		temptrade.setTradingId("CS-003");
+		temptrade.setCcy("USD");
+		temptrade.setType("b");
+		tradedao.buyAsset(temptrade);
+	}
+	
+	@Test
+	public void tradeselltest() throws InsufficientAmountException, EntityNotFoundException {
+		TradingDto temptrade1= new TradingDto();
+		temptrade1.setAmount(5.0);
+		temptrade1.setTradingId("CS-003");
+		temptrade1.setCcy("USD");
+		temptrade1.setType("b");
+		tradedao.buyAsset(temptrade1);
+		assertEquals(5, tradedao.totalBalance("CS-003").intValue());
+		assertEquals(128490, accDao.getBalance("ACC-003").intValue());
+		
+		TradingDto temptrd=new TradingDto();
+		temptrd.setAmount(3.0);
+		temptrd.setType("s");
+		temptrd.setTradingId("CS-003");
+		temptrd.setCcy("USD");
+		tradedao.sellAsset(temptrd);
+
+		assertEquals(2, tradedao.totalBalance("CS-003").intValue());
+		assertEquals(170496, accDao.getBalance("ACC-003").intValue());
+	}
+	
+	@Test
+	public void sumamount() throws InsufficientAmountException {		
+	TradingDto temptrade1= new TradingDto();
+	temptrade1.setAmount(5.0);
+	temptrade1.setTradingId("CS-003");
+	temptrade1.setCcy("USD");
+	temptrade1.setType("b");
+	tradedao.buyAsset(temptrade1);
+	
+	assertEquals(5, tradedao.totalBalance("CS-003").intValue());
 	}
 }

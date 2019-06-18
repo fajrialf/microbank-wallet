@@ -14,7 +14,6 @@ import javax.persistence.Table;
 public class WalletEntity {
 
 	@Id
-//	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="wallet_id")
 	String walletId;
 	

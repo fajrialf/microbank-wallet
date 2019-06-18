@@ -28,6 +28,17 @@ public class HandlerException {
     }
 
     @SuppressWarnings("rawtypes")
+    @ExceptionHandler(value = InsufficientAmountException.class)
+    public ResponseEntity<CommonResponse> respinsufficient(InsufficientAmountException e){
+        LOGGER.info("catchUserException");
+        LOGGER.error(e.getMessage());
+        LOGGER.warn(e.getMessage());
+        LOGGER.info(e.getMessage());
+        LOGGER.debug(e.getMessage());
+        return new ResponseEntity<>(new CommonResponse(e.getCode(), e.getDescription()), HttpStatus.OK);
+    }
+    
+    @SuppressWarnings("rawtypes")
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<CommonResponse> respentitynotfound(EntityNotFoundException e){
         LOGGER.info("catchEntitynotfound");

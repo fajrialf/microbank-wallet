@@ -12,7 +12,6 @@ import javax.persistence.Table;
 public class CustomerEntity {
 
 	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "customer_number")
 	String customerNumber;
 

@@ -3,9 +3,15 @@ package com.enigma.walletkurs.additional;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.enigma.walletkurs.exception.HandlerException;
+
 public class MD5 {
 	String generatedPassword = null;
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(HandlerException.class);
+    
     public String getSecurePassword(String value) {
         try {
             // Create MessageDigest instance for MD5
@@ -23,7 +29,11 @@ public class MD5 {
             //Get complete hashed password in hex format
             generatedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOGGER.info("catchMD5Exception");
+            LOGGER.error(e.getMessage());
+            LOGGER.warn(e.getMessage());
+            LOGGER.info(e.getMessage());
+            LOGGER.debug(e.getMessage());
         }
         return generatedPassword;
     }
