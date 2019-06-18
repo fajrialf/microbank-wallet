@@ -41,9 +41,12 @@ public class TradingDaoImpl implements TradingDao {
 
 	@Transactional
 	@Override
-	public TradingEntity buyAsset(TradingDto trade) throws InsufficientAmountException {
+	public TradingEntity buyAsset(TradingDto trade) throws InsufficientAmountException, EntityNotFoundException {
 		TradingEntity temptrade = new TradingEntity();
 		AccountEntity tempacc = accdao.getByDescription(trade.getTradingId(),"Virtual");
+		if (tempacc == null) {
+			throw new EntityNotFoundException(44, "You dont have virutal account");
+		}
 		Query query = em.createQuery("from ExchangeEntity order by rateId desc");
 		query.setMaxResults(1);
 		ExchangeEntity exchange = (ExchangeEntity) query.getSingleResult();
@@ -74,6 +77,9 @@ public class TradingDaoImpl implements TradingDao {
 		AccountEntity tempacc=accdao.getByDescription(trade.getTradingId(), "Virtual");
 		Query lateexchange=em.createQuery("from ExchangeEntity order by rateId desc");
 		lateexchange.setMaxResults(1);
+		if (tempacc == null) {
+			throw new EntityNotFoundException(44, "You dont have virutal account");
+		}
 		ExchangeEntity latesexchange=(ExchangeEntity) lateexchange.getSingleResult();
 		Query sumtrading = em.createQuery("select sum(T.sisa) from TradingEntity T where tradingId=?1");
 		sumtrading.setParameter(1, trade.getTradingId());
@@ -131,6 +137,13 @@ public class TradingDaoImpl implements TradingDao {
 		if (sumtrading.getResultList().isEmpty()) {
 			return null;	
 		}
-			return (Double) sumtrading.getSingleResult();
+		Double temp=(Double) sumtrading.getSingleResult();
+			return temp;
+	}
+
+	@Override
+	public List<TradingEntity> getalltrading() {
+		Query query=em.createQuery("from TradingEntity a group by a.tradingId");
+		return query.getResultList();
 	}
 }

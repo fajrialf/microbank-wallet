@@ -60,6 +60,7 @@ public class TransactionDaoImplement implements TransactionDao {
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
         temptrans.setTransactionType(transtype);
+        temptrans.setDescription(transaction.getDescription());
         return entityManager.merge(temptrans);
     }
     String generateid() {
@@ -105,6 +106,7 @@ public class TransactionDaoImplement implements TransactionDao {
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
         temptrans.setTransactionType(transtype);
+        temptrans.setDescription(transaction.getDescription());
         return entityManager.merge(temptrans);
     }
 
@@ -126,6 +128,7 @@ public class TransactionDaoImplement implements TransactionDao {
         temptrans.setAmount(transaction.getAmount());
         temptrans.setDate(new Date());
         temptrans.getTransactionType().setTransactionType(transaction.getTransactionType().getTransactionType());
+        temptrans.setDescription(transaction.getDescription());
         return entityManager.merge(temptrans);
     }
 

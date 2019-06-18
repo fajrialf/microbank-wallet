@@ -151,7 +151,7 @@ public class TradingDaoTest {
 	}
 	
 	@Test
-	public void tradebuytest() throws InsufficientAmountException {
+	public void tradebuytest() throws InsufficientAmountException, EntityNotFoundException {
 		TradingDto temptrade= new TradingDto();
 		temptrade.setAmount(3.0);
 		temptrade.setTradingId("CS-002");
@@ -162,7 +162,7 @@ public class TradingDaoTest {
 	}
 	
 	@Test(expected=InsufficientAmountException.class)
-	public void tradebuyfail() throws InsufficientAmountException {
+	public void tradebuyfail() throws InsufficientAmountException, EntityNotFoundException {
 		TradingDto temptrade= new TradingDto();
 		temptrade.setAmount(20.1);
 		temptrade.setTradingId("CS-003");
@@ -194,7 +194,7 @@ public class TradingDaoTest {
 	}
 	
 	@Test
-	public void sumamount() throws InsufficientAmountException {		
+	public void sumamount() throws InsufficientAmountException, EntityNotFoundException {		
 	TradingDto temptrade1= new TradingDto();
 	temptrade1.setAmount(5.0);
 	temptrade1.setTradingId("CS-003");

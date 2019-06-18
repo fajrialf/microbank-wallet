@@ -17,12 +17,19 @@ public class TransactionDto {
 	
 	Double amount;
 	
-	@Column(name="date")
 	Date date;
 	
-	@OneToOne
-	@JoinColumn(name="transaction_type_id")
 	TransactionTypeDto transactionType;
+
+	String description;
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public String getTransactionId() {
 		return transactionId;
