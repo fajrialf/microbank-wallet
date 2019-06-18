@@ -1,14 +1,13 @@
 package com.enigma.walletkurs.daoimpl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.enigma.walletkurs.dao.AccountTypeDao;
 import com.enigma.walletkurs.models.AccountTypeEntity;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 public class AccountTypeDaoImpl implements AccountTypeDao{
 

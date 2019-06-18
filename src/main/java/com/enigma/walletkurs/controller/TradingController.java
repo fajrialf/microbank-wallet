@@ -15,7 +15,7 @@ import com.enigma.walletkurs.models.dto.TradingDto;
 
 @RestController
 public class TradingController {
-	public static final String URI_REQUEST_Trading = "trading";
+	public static final String URI_REQUEST_TRading = "trading";
 
     @Autowired
     TradingDao tradedao;
@@ -23,7 +23,7 @@ public class TradingController {
     @Autowired
     ExchangeDao exchangeDao;
     
-    @PostMapping(value=URI_REQUEST_Trading)
+    @PostMapping(value=URI_REQUEST_TRading)
     public CommonResponse<TradingEntity> trading(@RequestBody TradingDto trade) throws EntityNotFoundException, InsufficientAmountException{
     	CommonResponse<TradingEntity>resp= new CommonResponse<>();
     	if (trade.getType().equalsIgnoreCase("s")) {

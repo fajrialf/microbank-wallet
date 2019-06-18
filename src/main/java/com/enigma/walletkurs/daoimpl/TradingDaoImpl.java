@@ -108,7 +108,7 @@ public class TradingDaoImpl implements TradingDao {
 					trade.setAmount(0.0);
 					temptrades.get(i).setSisa(0.0);
 					profitloss+=((latesexchange.getBuy()-temptrades.get(i).getRateId().getBuy()) * temptrades.get(i).getAmount());
-				};
+				}
 				traderepo.save(temptrades.get(i));
 				i++;
 			}
@@ -131,7 +131,6 @@ public class TradingDaoImpl implements TradingDao {
 		if (sumtrading.getResultList().isEmpty()) {
 			return null;	
 		}
-			Double balance= (Double) sumtrading.getSingleResult();
-			return balance;
+			return (Double) sumtrading.getSingleResult();
 	}
 }

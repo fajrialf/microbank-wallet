@@ -62,8 +62,7 @@ public class CustomerDaoImplement implements CustomerDao {
             tempcust.setCustomerNumber(customerNumber.generatedid());
         }
 
-        CustomerEntity data = entityManager.merge(tempcust);
-        return data;
+        return entityManager.merge(tempcust);
     }
 
     @Transactional
@@ -79,8 +78,7 @@ public class CustomerDaoImplement implements CustomerDao {
     	tempcust.setNik(customer.getNik());
     	tempcust.setPassword(encodeMD5.getSecurePassword(customer.getPassword()));
     	tempcust.setCustomerNumber(customer.getCustomerNumber());
-        CustomerEntity data = entityManager.merge(tempcust);
-        return data;
+        return entityManager.merge(tempcust);
     }
 
     @Transactional
