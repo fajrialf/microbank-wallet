@@ -116,7 +116,7 @@ public class WalletImplTest {
 	}
 	
 	@Test
-	public void registerwallet() {
+	public void registerwallet() throws ExistException {
 		WalletAccountDto walac= new WalletAccountDto();
 		AccountDto newacc= new AccountDto();
 		WalletDto newwal= new WalletDto();

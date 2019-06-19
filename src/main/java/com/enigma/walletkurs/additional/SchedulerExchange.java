@@ -3,8 +3,6 @@ package com.enigma.walletkurs.additional;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +20,6 @@ import com.enigma.walletkurs.dao.OutstandingDao;
 import com.enigma.walletkurs.dao.TradingDao;
 import com.enigma.walletkurs.exception.HandlerException;
 import com.enigma.walletkurs.models.ExchangeEntity;
-import com.enigma.walletkurs.models.OutStandingEntity;
-import com.enigma.walletkurs.models.TradingEntity;
 import com.enigma.walletkurs.models.dto.KursDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,19 +73,4 @@ public class SchedulerExchange {
     	exchange.setcCy2(newkurs.getMatauang());
     	excdao.createentity(exchange);
     }
-    
-//    @Scheduled(fixedDelay=3000)
-//    public void outstanding() {
-//    	List<TradingEntity>templist=tradingDao.getalltrading();
-//    	if (!templist.isEmpty()) {
-//        	for (TradingEntity tradingEntity : templist) {
-//        		Double tempbalance=tradingDao.totalBalance(tradingEntity.getTradingId());
-//            	OutStandingEntity tempout =new OutStandingEntity();	
-//            	tempout.setDate(new Date());
-//            	tempout.setOutstanding(tempbalance);
-//            	tempout.setTrader(tradingEntity);
-//            	outstandingDao.createoutstanding(tempout);
-//    		}
-//    	}
-//    }
 }

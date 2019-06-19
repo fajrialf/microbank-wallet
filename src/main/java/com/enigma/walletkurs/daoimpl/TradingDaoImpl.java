@@ -138,12 +138,19 @@ public class TradingDaoImpl implements TradingDao {
 			return null;	
 		}
 		Double temp=(Double) sumtrading.getSingleResult();
-			return temp;
+		return temp;
 	}
 
 	@Override
 	public List<TradingEntity> getalltrading() {
 		Query query=em.createQuery("from TradingEntity a group by a.tradingId");
 		return query.getResultList();
+	}
+
+	@Override
+	public List<TradingEntity> historytrading(String id) {
+		Query historyTrading = em.createQuery("from TradingEntity where tradingId=?1");
+		historyTrading.setParameter(1, id);
+		return historyTrading.getResultList();
 	}
 }

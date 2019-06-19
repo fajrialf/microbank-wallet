@@ -13,7 +13,7 @@ public interface WalletDao {
 	List<WalletEntity>getAllWallet();
 	WalletEntity createwallet(WalletDto wallet) throws ExistException;
 	WalletEntity getwalletById(String walletid);
-	WalletAccountEntity registeraccount(WalletAccountDto walletacc);
+	WalletAccountEntity registeraccount(WalletAccountDto walletacc) throws ExistException;
 	List<WalletEntity>getAllWalletByCustomer(String customerNumber);
 	List<WalletAccountEntity>getAllWalletAccountByWallet(String walletId);
 	String deletewallet(String walletid) throws EntityNotFoundException;

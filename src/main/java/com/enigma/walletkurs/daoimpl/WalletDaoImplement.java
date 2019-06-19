@@ -66,8 +66,11 @@ public class WalletDaoImplement implements WalletDao{
 	}
 
 	@Override
-	public WalletAccountEntity registeraccount(WalletAccountDto walletacc) {
+	public WalletAccountEntity registeraccount(WalletAccountDto walletacc) throws ExistException {
 		WalletAccountEntity tempwalac= new WalletAccountEntity();
+		if (walletaccrepo.existsByWalletIdWalletIdAndAccountNumberAccountNumber(walletacc.getWalletId().getWalletId(), walletacc.getAccountNumber().getAccountNumber())) {
+			throw new ExistException(46,"error, account already binded");
+		}
 		AccountEntity tempacc = new AccountEntity();
 		AccountDto tempaccdto= walletacc.getAccountNumber();
 		tempacc.setAccountNumber(tempaccdto.getAccountNumber());

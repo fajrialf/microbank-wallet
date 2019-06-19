@@ -13,4 +13,5 @@ public interface TradingDao {
 	TradingEntity sellAsset(TradingDto trade) throws EntityNotFoundException, InsufficientAmountException;
 	Double totalBalance(String tradeid);
 	List<TradingEntity>getalltrading();
+	List<TradingEntity>historytrading(String id);
 }

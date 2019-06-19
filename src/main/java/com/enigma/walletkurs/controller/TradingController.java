@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,10 +39,24 @@ public class TradingController {
     	return resp;
     }
     
-    @GetMapping()
+    @GetMapping(value=URI_REQUEST_TRADINGS)
     public CommonResponse<List<TradingEntity>>listtrading(){
     	CommonResponse<List<TradingEntity>>resp=new CommonResponse<>();
     	resp.setData(tradedao.getalltrading());
+    	return resp;
+    }
+    
+    @GetMapping(value=URI_REQUEST_TRADINGS+"/{id}/balance")
+    public CommonResponse<Double>balancetrading(@PathVariable(name="id")String id){
+    	CommonResponse<Double>resp=new CommonResponse<>();
+    	resp.setData(tradedao.totalBalance(id));
+    	return resp;
+    }
+    
+    @GetMapping(value=URI_REQUEST_TRADINGS+"/{id}")
+    public CommonResponse<List<TradingEntity>>Historytrading(@PathVariable(name="id")String id){
+    	CommonResponse<List<TradingEntity>>resp=new CommonResponse<>();
+    	resp.setData(tradedao.historytrading(id));
     	return resp;
     }
 }

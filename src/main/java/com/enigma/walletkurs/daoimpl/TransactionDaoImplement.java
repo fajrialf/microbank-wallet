@@ -43,13 +43,8 @@ public class TransactionDaoImplement implements TransactionDao {
 		}
 		transtype.setTransactionType("002");
         if (balance != null) {
-//            Double balance2 = accountDao.getBalance(transaction.getAccountNumberDebit());
-//            if (balance2!=null) {
             double result = balance + transaction.getAmount();
-//            double result2 = balance2 - transaction.getAmount();
             accountDao.updateBalance(transaction.getAccountNumberCredit(), result);
-//            accountDao.updateBalance(transaction.getAccountNumberDebit(), result2);
-//            }
         }else {
         	throw new EntityNotFoundException(44, accerr);
         }

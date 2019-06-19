@@ -36,7 +36,7 @@ public class WalletController {
 	}
 	
 	@PostMapping(path=URI_REQUEST_WALLETACC)
-	public CommonResponse<WalletAccountEntity>registerwallet(@RequestBody WalletAccountDto walletacc){
+	public CommonResponse<WalletAccountEntity>registerwallet(@RequestBody WalletAccountDto walletacc) throws ExistException{
 		CommonResponse<WalletAccountEntity>resp= new CommonResponse<>();
 		resp.setData(walletdao.registeraccount(walletacc));
 		return resp;

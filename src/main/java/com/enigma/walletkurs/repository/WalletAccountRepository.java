@@ -9,4 +9,5 @@ import com.enigma.walletkurs.models.WalletAccountEntity;
 public interface WalletAccountRepository extends JpaRepository<WalletAccountEntity, Integer> {
 	List<WalletAccountEntity>findByWalletIdWalletId(String walletid);
 	List<WalletAccountEntity>findByWalletIdWalletIdAndStatus(String walletid,String status);
+	boolean existsByWalletIdWalletIdAndAccountNumberAccountNumber(String wallid,String accnum);
 }
