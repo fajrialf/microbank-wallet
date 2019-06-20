@@ -31,7 +31,7 @@ public class ExchangeDaoImpl implements ExchangeDao{
 
 	@Override
 	public List<ExchangeEntity> listRate() {
-		Query query=em.createQuery("from ExchangeEntity order by rateId desc");
+		Query query=em.createQuery("from ExchangeEntity order by rateId asc");
 		return query.getResultList();
 	}
 }

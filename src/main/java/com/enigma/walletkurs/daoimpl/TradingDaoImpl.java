@@ -42,7 +42,10 @@ public class TradingDaoImpl implements TradingDao {
 	@Transactional
 	@Override
 	public TradingEntity buyAsset(TradingDto trade) throws InsufficientAmountException, EntityNotFoundException {
-		TradingEntity temptrade = new TradingEntity();
+		TradingEntity temptrade = new TradingEntity();		
+		if (trade.getAmount()<=0) {
+			throw new InsufficientAmountException(52, "amount must greater than 0");
+		}
 		AccountEntity tempacc = accdao.getByDescription(trade.getTradingId(),"Virtual");
 		if (tempacc == null) {
 			throw new EntityNotFoundException(44, "You dont have virutal account");
@@ -74,6 +77,9 @@ public class TradingDaoImpl implements TradingDao {
 	@Override
 	public TradingEntity sellAsset(TradingDto trade) throws EntityNotFoundException, InsufficientAmountException {
 		TradingEntity temptrd = new TradingEntity();
+		if (trade.getAmount()<=0) {
+			throw new InsufficientAmountException(52, "amount must greater than 0");
+		}
 		AccountEntity tempacc=accdao.getByDescription(trade.getTradingId(), "Virtual");
 		Query lateexchange=em.createQuery("from ExchangeEntity order by rateId desc");
 		lateexchange.setMaxResults(1);
@@ -91,7 +97,8 @@ public class TradingDaoImpl implements TradingDao {
 				throw new InsufficientAmountException(52, "Error, Trade balance is not enough");
 			}
 			Double dollarsamount=latesexchange.getBuy()*trade.getAmount();
-			tempacc.setBalance(tempacc.getBalance()+dollarsamount);
+			Double newbalance=tempacc.getBalance()+dollarsamount;
+			tempacc.setBalance(newbalance);
 			accdao.updateBalance(tempacc.getAccountNumber(), tempacc.getBalance());
 			temptrd.setAmount(trade.getAmount());
 			int i = 0;
@@ -123,10 +130,10 @@ public class TradingDaoImpl implements TradingDao {
 			temptrd.setDate(new Date());
 			temptrd.setType("s");
 			temptrd.setRateId(latesexchange);
+			temptrd.setTradingId(trade.getTradingId());
+			traderepo.save(temptrd);
+			transDao.sellAsset(tempacc.getAccountNumber(),newbalance);
 		}
-		temptrd.setTradingId(trade.getTradingId());
-		traderepo.save(temptrd);
-		transDao.sellAsset(tempacc.getAccountNumber(),tempacc.getBalance());
 		return temptrd;
 	}
 
